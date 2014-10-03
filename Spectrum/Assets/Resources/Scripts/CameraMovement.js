@@ -1,4 +1,4 @@
-﻿//#pragma strict
+﻿#pragma strict
 
 var target;
 var Manager:GameManager;
@@ -16,23 +16,18 @@ var rotateR:boolean;
 var speed:int;
 
 function Start () {
-	return;
-	print(this.gameObject.name)
+	this.transform.position = Vector3(0,0,-10);
 	Manager = this.gameObject.transform.parent.GetComponent(GameManager);
 	character = Manager.character.model;
 	speed = 1;
 }
 
 function Update(){
-	return;
-	print("here");
 	if (Input.GetKeyUp("w")){
-		print("herte");
 		 moveN = false;
 		 character.moveN = false;
 	}
 	if (Input.GetKeyDown("w")) {
-		print("arhah");
 		moveN = true;
 		character.moveN = true;
 	}	
