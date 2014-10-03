@@ -1,4 +1,4 @@
-﻿#pragma strict
+﻿//#pragma strict
 
 var target;
 var Manager:GameManager;
@@ -16,6 +16,7 @@ var rotateR:boolean;
 var speed:int;
 
 function Start () {
+	return;
 	print(this.gameObject.name)
 	Manager = this.gameObject.transform.parent.GetComponent(GameManager);
 	character = Manager.character.model;
@@ -23,6 +24,7 @@ function Start () {
 }
 
 function Update(){
+	return;
 	print("here");
 	if (Input.GetKeyUp("w")){
 		print("herte");
