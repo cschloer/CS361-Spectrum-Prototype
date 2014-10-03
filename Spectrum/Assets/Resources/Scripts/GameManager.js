@@ -1,5 +1,5 @@
 ﻿var characterFolder : GameObject;	// This will be an empty game object used for organizing objects in the hierarchy pane.
-var character : Component;			// This array will hold the character objects that are created.
+var character : Character;			// This array will hold the character objects that are created.
 
 
 
@@ -12,7 +12,7 @@ function Start () {
 
 // Called every frame.
 function Update () {
-	print("hello");
+
 }
 
 function addCharacter(x : float , y : float) {

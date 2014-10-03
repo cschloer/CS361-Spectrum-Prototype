@@ -1,5 +1,5 @@
 ﻿var model : CharacterModel;
-var characterType: int;
+
 function init() {
 	enabled = false;
 	var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
