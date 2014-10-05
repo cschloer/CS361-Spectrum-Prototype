@@ -15,7 +15,7 @@ function init(type: String) {
 		var wmodel = modelObject.AddComponent("TileWallModel");					// Add a script to control direction of the unit.
 		box = modelObject.AddComponent("BoxCollider");						// Add boxcollider.
 		box.center = wmodel.transform.position;								// Center the boxcollider on the unit.
-		box.size = Vector3(1,1,1);
+		box.size = Vector3(2,2,1);
 		wmodel.init(this);													// Initialize the tileModel.
 	} else {
 		var model = modelObject.AddComponent("TileFloorModel");					// Add a script to control direction of the unit.

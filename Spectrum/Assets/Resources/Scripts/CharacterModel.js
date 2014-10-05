@@ -116,7 +116,7 @@ function Update () {
 	}
 	if (Input.GetKeyDown("space")) {
 		if (!jumping && !rolling) { 
-			if (blue){ // roll because blue
+			if (!blue){ // roll because blue
 				this.renderer.material.color = Color(.5,.5,.5);
 				speed = 10;
 				Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 10;
@@ -155,6 +155,7 @@ function Update () {
 	}	
 	Manager.gameObject.GetComponentInChildren(CameraMovement).gameObject.transform.position = Vector3(this.transform.position.x, this.transform.position.y, -10)+3*this.transform.up;
 	Manager.gameObject.GetComponentInChildren(CameraMovement).gameObject.transform.rotation = this.transform.rotation;
+	//OnDrawGizmos();
 }
 function OnCollisionExit(collisionInfo : Collision){
 	modelObject.GetComponent(Rigidbody).velocity = Vector3.zero;
@@ -229,5 +230,9 @@ function stopMovement(){
 	Manager.gameObject.GetComponentInChildren(CameraMovement).moveN = false;
 }
 
-
+function OnDrawGizmos() {
+		// Draw a yellow cube at the transforms position
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireCube (transform.position, modelObject.GetComponent(BoxCollider).size);
+}
 
