@@ -5,10 +5,7 @@ var character : Character;			// This is the hero character.
 var monsters : Array;				// This array holds monsters.
 var tiles : Array;					// This array holds tiles.
 
-var characterFolder : GameObject;	// This will be an empty game object used for organizing objects in the hierarchy pane.
-var character : Character;			// This array will hold the character objects that are created.
 var colorFolder : GameObject;
-var monsterFolder : Array;
 var camera:GameObject;
 
 // Called once when the script is created.
