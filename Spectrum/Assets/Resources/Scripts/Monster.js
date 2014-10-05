@@ -27,7 +27,7 @@ public class Monster extends MonoBehaviour
 	}
 	
 	public function move(multiplier : float){
-		transform.Translate(model.transform.rotation * Time.deltaTime*moveSpeed*multiplier);
+//		transform.Translate(model.transform.rotation * Time.deltaTime*moveSpeed*multiplier);
 	}
 	public function moveLeft(){
 		moveLeft(1);

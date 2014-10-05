@@ -13,6 +13,10 @@ var blue:boolean;
 var red:boolean;
 var yellow:boolean;
 
+var rolling:boolean;
+
+var rollTimer:float;
+
 
 // Use this for initialization
 function Start () {
@@ -20,13 +24,24 @@ function Start () {
 	blue = false;
 	red = false;
 	yellow = false;
-	print(Manager.gameObject.GetComponentInChildren(CameraMovement));
+	rolling = false;
 }
 
 // Update is called once per frame
 function Update () {
-	// this.gameObject.transform.Rotate(Vector3(0,0,Time.deltaTime)*30);
+
+	if (rolling){
+		rollTimer += Time.deltaTime;
+		this.transform.Translate(Vector3.up * Time.deltaTime*speed);
+		if (rollTimer >= 0.5) { // Amount of time for rolling
+			rolling = false;
+			this.renderer.material.color = Color(1,1,1);	
+			Manager.gameObject.GetComponentInChildren(CameraMovement).rolling = false;
+			speed = 1;
+			Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 1;
+		}
 	
+	}
 	if (Input.GetKeyUp("w")){
 		 moveN = false;
 		 Manager.gameObject.GetComponentInChildren(CameraMovement).moveN = false;
@@ -85,29 +100,42 @@ function Update () {
 		}
 	}
 	if (Input.GetKeyDown("space")) {
-		speed = 5;
-		Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 5;
+		if (blue){ // roll because blue
+			this.renderer.material.color = Color(.5,.5,.5);
+			speed = 10;
+			Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 10;
+			rolling = true;
+			Manager.gameObject.GetComponentInChildren(CameraMovement).rolling = true;
+			rollTimer = 0;
+		}
+		else { // jump because not blue
+		
+		
+		
+		}
 	}
-	if (Input.GetKeyUp("space")) {
+	/*if (Input.GetKeyUp("space")) {
 		speed = 1;
 		Manager.gameObject.GetComponentInChildren(CameraMovement).speed =1;
-	}
+	}*/
 	
 	
 	
 	
-	if (rotateR) {
-		this.transform.Rotate(Vector3(0,0,Time.deltaTime*80*(speed)));
+	if (!rolling){
+	
+		if (rotateR) {
+			this.transform.Rotate(Vector3(0,0,Time.deltaTime*80*(speed)));
+			
+		}
+		if (rotateL) this.transform.Rotate(Vector3(0,0,-Time.deltaTime*80*(speed)));
 		
-	}
-	if (rotateL) this.transform.Rotate(Vector3(0,0,-Time.deltaTime*80*(speed)));
+		if (moveN) this.transform.Translate(Vector3.up * Time.deltaTime*speed);
+		if (moveE) this.transform.Translate(Vector3.right * Time.deltaTime*speed);
+		if (moveS) this.transform.Translate(Vector3.down * Time.deltaTime*speed);
+		if (moveW) this.transform.Translate(Vector3.left * Time.deltaTime*speed);
 	
-	if (moveN) this.transform.Translate(Vector3.up * Time.deltaTime*speed);
-	if (moveE) this.transform.Translate(Vector3.right * Time.deltaTime*speed);
-	if (moveS) this.transform.Translate(Vector3.down * Time.deltaTime*speed);
-	if (moveW) this.transform.Translate(Vector3.left * Time.deltaTime*speed);
-	
-		
+	}	
 }
 
 function OnTriggerEnter(col:Collider){
@@ -128,6 +156,22 @@ function OnTriggerEnter(col:Collider){
 	}
 }
 
+
+function stopMovement(){
+	rotateR = false;
+	Manager.gameObject.GetComponentInChildren(CameraMovement).rotateR = false;
+	rotateL = false;
+	Manager.gameObject.GetComponentInChildren(CameraMovement).rotateL = false;
+	
+	moveE = false;
+	Manager.gameObject.GetComponentInChildren(CameraMovement).moveE = false;
+	moveW = false;
+	Manager.gameObject.GetComponentInChildren(CameraMovement).moveW = false;	
+	moveS = false;
+	Manager.gameObject.GetComponentInChildren(CameraMovement).moveS = false;
+	moveN = false;
+	Manager.gameObject.GetComponentInChildren(CameraMovement).moveN = false;
+}
 
 
 
