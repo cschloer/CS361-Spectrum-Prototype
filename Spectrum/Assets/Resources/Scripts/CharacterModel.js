@@ -14,33 +14,47 @@ var red:boolean;
 var yellow:boolean;
 
 var rolling:boolean;
+var jumping:boolean;
 
-var rollTimer:float;
+var rjTimer:float;
+
+
+var modelObject;
+
 
 
 // Use this for initialization
 function Start () {
-	speed = 1;
+	speed = 2;
 	blue = false;
 	red = false;
 	yellow = false;
 	rolling = false;
+
 }
 
 // Update is called once per frame
 function Update () {
 
 	if (rolling){
-		rollTimer += Time.deltaTime;
+		rjTimer += Time.deltaTime;
 		this.transform.Translate(Vector3.up * Time.deltaTime*speed);
-		if (rollTimer >= 0.5) { // Amount of time for rolling
+		if (rjTimer >= 0.5) { // Amount of time for rolling
 			rolling = false;
 			this.renderer.material.color = Color(1,1,1);	
 			Manager.gameObject.GetComponentInChildren(CameraMovement).rolling = false;
-			speed = 1;
-			Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 1;
+			speed = 2;
+			Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 2;
 		}
 	
+	}
+	if (jumping){
+		rjTimer += Time.deltaTime;
+		if (rjTimer >= 1) { // Amount of time for rolling
+			jumping = false;
+			this.renderer.material.color = Color(1,1,1);	
+			Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = false;
+		}
 	}
 	if (Input.GetKeyUp("w")){
 		 moveN = false;
@@ -106,18 +120,16 @@ function Update () {
 			Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 10;
 			rolling = true;
 			Manager.gameObject.GetComponentInChildren(CameraMovement).rolling = true;
-			rollTimer = 0;
+			rjTimer = 0;
 		}
 		else { // jump because not blue
-		
-		
-		
+			this.renderer.material.color = Color(2,2,2);
+			jumping = true;
+			Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = true;
+			rjTimer = 0;
 		}
 	}
-	/*if (Input.GetKeyUp("space")) {
-		speed = 1;
-		Manager.gameObject.GetComponentInChildren(CameraMovement).speed =1;
-	}*/
+	
 	
 	
 	
@@ -136,6 +148,7 @@ function Update () {
 		if (moveW) this.transform.Translate(Vector3.left * Time.deltaTime*speed);
 	
 	}	
+	Manager.gameObject.GetComponentInChildren(CameraMovement).doMovement();
 }
 
 function OnTriggerEnter(col:Collider){
@@ -145,8 +158,16 @@ function OnTriggerEnter(col:Collider){
 		print("Blue: " + blue);
 	}
 	if (col.gameObject.name.Contains("Red")){
-		if (red) red = false;
-		else red = true;
+		if (red){
+			red = false;
+			this.transform.localScale = Vector3(1,1,1); 
+			modelObject.GetComponent(BoxCollider).size = Vector3(.25,.5,10);
+		}
+		else {
+			red = true;
+			this.transform.localScale = Vector3(2,2,2); 
+			modelObject.GetComponent(BoxCollider).size = Vector3(.5,1,10);
+		}
 		print("Red: " + red);
 	}
 	if (col.gameObject.name.Contains("Yellow")){
