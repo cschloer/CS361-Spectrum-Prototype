@@ -26,7 +26,7 @@ function Start () {
 	addCircle(2); // yellow circle
 	addMonster(4, 3, character);
 	
-	//protolevelInit();
+	protolevelInit();
 	
 }
 
@@ -90,17 +90,19 @@ function addMonster(x : float, y :float, c : Character){
 function addTile(x : float, y :float, t : String){
 	var tileObject = new GameObject();						// Create a new empty game object that will hold a character.
 	var tileScript = tileObject.AddComponent("Tile");		// Add the character.js script to the object.
-	tileScript.transform.position = Vector3(x,y,0);		// Position the character at x,y.								
+	tileScript.transform.position = Vector3(x,y,1);			// Position the character at x,y.								
 	
 	tileScript.init(t);
-	tileFolder.Add(tileScript);
+	tiles.Add(tileScript);
 	tileScript.name = "Tile" + tiles.length;
 }
 
 // ProtolevelInit
 // Initiates the prototype level.
 function protolevelInit(){
-  
-  
-  
+  for( i = -10; i <=10; i++) {
+    for( j = -10; j <=10; j++){
+      addTile(i,j,"");
+    }
+  }
 }
