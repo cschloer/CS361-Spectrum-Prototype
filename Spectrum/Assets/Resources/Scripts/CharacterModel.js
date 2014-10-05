@@ -151,7 +151,33 @@ function Update () {
 	Manager.gameObject.GetComponentInChildren(CameraMovement).doMovement();
 }
 
-function OnTriggerEnter(col:Collider){
+function changeBlue(){
+	if (blue) blue = false;
+	else blue = true;
+	print("Blue: " + blue);
+
+}
+function changeRed(){
+	if (red){
+		red = false;
+		this.transform.localScale = Vector3(1,1,1); 
+		modelObject.GetComponent(BoxCollider).size = Vector3(.25,.5,10);
+	}
+	else {
+		red = true;
+		this.transform.localScale = Vector3(2,2,2); 
+		modelObject.GetComponent(BoxCollider).size = Vector3(.5,1,10);
+	}
+	print("Red: " + red);
+
+}
+function changeYellow(){
+	if (yellow) yellow = false;
+	else yellow = true;
+	print("Yellow: " + yellow);
+}
+
+/*function OnTriggerEnter(col:Collider){
 	if (col.gameObject.name.Contains("Blue")){
 		if (blue) blue = false;
 		else blue = true;
@@ -176,7 +202,7 @@ function OnTriggerEnter(col:Collider){
 		print("Yellow: " + yellow);
 	}
 }
-
+*/
 
 function stopMovement(){
 	rotateR = false;
