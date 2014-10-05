@@ -153,7 +153,7 @@ function Update () {
 		if (moveW) this.transform.Translate(Vector3.left * Time.deltaTime*speed);
 	
 	}	
-	Manager.gameObject.GetComponentInChildren(CameraMovement).gameObject.transform.position = Vector3(this.transform.position.x, this.transform.position.y, -10);
+	Manager.gameObject.GetComponentInChildren(CameraMovement).gameObject.transform.position = Vector3(this.transform.position.x, this.transform.position.y, -10)+3*this.transform.up;
 	Manager.gameObject.GetComponentInChildren(CameraMovement).gameObject.transform.rotation = this.transform.rotation;
 }
 function OnCollisionExit(collisionInfo : Collision){

@@ -118,6 +118,7 @@ function addTile(x : float, y :float, t : String){
 function protolevelInit(){
   for( i = -10; i <=10; i++) {
     for( j = -10; j <=10; j++){
+    	print("hello");
       if( i == -10 || i == 10 || j == -10 || j == 10){
       	addTile(i,j,"Wall");
       }
