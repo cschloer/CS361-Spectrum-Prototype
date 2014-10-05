@@ -23,12 +23,13 @@ public class Monster extends MonoBehaviour
 	
 		modelObject.collider.enabled = false;
  		modelObject.AddComponent(BoxCollider);
-		modelObject.GetComponent(BoxCollider).isTrigger = true;
+		modelObject.GetComponent(BoxCollider).isTrigger = false;
  		modelObject.GetComponent(BoxCollider).size = Vector3(.5,.5,.5);
  		modelObject.AddComponent(Rigidbody);
-		modelObject.GetComponent(Rigidbody).isKinematic = true;
+		modelObject.GetComponent(Rigidbody).isKinematic = false;
  		modelObject.GetComponent(Rigidbody).useGravity = false;
  		modelObject.GetComponent(Rigidbody).inertiaTensor = Vector3(1, 1, 1);
+ 		modelObject.GetComponent(Rigidbody).freezeRotation = true;
 	}
 	
 	public function move(){

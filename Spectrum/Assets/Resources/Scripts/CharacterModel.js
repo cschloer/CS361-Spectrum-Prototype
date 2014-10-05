@@ -54,6 +54,7 @@ function Update () {
 			jumping = false;
 			this.renderer.material.color = Color(1,1,1);	
 			Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = false;
+			modelObject.GetComponent(BoxCollider).isTrigger = false;
 		}
 	}
 	if (Input.GetKeyUp("w")){
@@ -114,19 +115,23 @@ function Update () {
 		}
 	}
 	if (Input.GetKeyDown("space")) {
-		if (blue){ // roll because blue
-			this.renderer.material.color = Color(.5,.5,.5);
-			speed = 10;
-			Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 10;
-			rolling = true;
-			Manager.gameObject.GetComponentInChildren(CameraMovement).rolling = true;
-			rjTimer = 0;
-		}
-		else { // jump because not blue
-			this.renderer.material.color = Color(2,2,2);
-			jumping = true;
-			Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = true;
-			rjTimer = 0;
+		if (!jumping && !rolling) { 
+			if (blue){ // roll because blue
+				this.renderer.material.color = Color(.5,.5,.5);
+				speed = 10;
+				Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 10;
+				rolling = true;
+				Manager.gameObject.GetComponentInChildren(CameraMovement).rolling = true;
+				rjTimer = 0;
+			}
+			else { // jump because not blue
+				this.renderer.material.color = Color(2,2,2);
+				jumping = true;
+				Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = true;
+				rjTimer = 0;
+				modelObject.GetComponent(BoxCollider).isTrigger = true;
+			}
+		
 		}
 	}
 	
@@ -148,7 +153,11 @@ function Update () {
 		if (moveW) this.transform.Translate(Vector3.left * Time.deltaTime*speed);
 	
 	}	
-	Manager.gameObject.GetComponentInChildren(CameraMovement).doMovement();
+	Manager.gameObject.GetComponentInChildren(CameraMovement).gameObject.transform.position = Vector3(this.transform.position.x, this.transform.position.y, -10);
+	Manager.gameObject.GetComponentInChildren(CameraMovement).gameObject.transform.rotation = this.transform.rotation;
+}
+function OnCollisionExit(collisionInfo : Collision){
+	modelObject.GetComponent(Rigidbody).velocity = Vector3.zero;
 }
 
 function changeBlue(){
