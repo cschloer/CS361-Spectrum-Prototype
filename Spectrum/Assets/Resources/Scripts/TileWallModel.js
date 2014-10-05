@@ -21,3 +21,10 @@ function init(own : Tile) {
 	//renderer.sortingOrder = 2;
 	
 }
+
+
+function OnDrawGizmos () {
+		// Draw a yellow cube at the transforms position
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireCube (transform.position, owner.modelObject.GetComponent(BoxCollider).size);
+}
