@@ -30,7 +30,7 @@ public class Monster extends MonoBehaviour
 		transform.position += model.transform.up * Time.deltaTime*moveSpeed*multiplier;
 	}
 	public function moveBack(){
-		moveBackward(1);
+		moveBack(1);
 	}
 	
 	public function moveBack(multiplier : float){
@@ -90,6 +90,7 @@ public class Monster extends MonoBehaviour
 	
 	public function circlingBehaviour(distance : float){
 		moveRight();
+		turnToHero();
 		if(distanceToHero() > distance){
 			move();
 		} else {
