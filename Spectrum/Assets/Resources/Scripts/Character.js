@@ -7,7 +7,8 @@ function init(m) {
 	//gemType = 1;
 	modelObject.collider.enabled = false;
 	modelObject.AddComponent(BoxCollider);
-	modelObject.GetComponent(BoxCollider).isTrigger = true;
+	modelObject.GetComponent(BoxCollider).name = "Box1";
+	modelObject.GetComponent(BoxCollider).isTrigger = false;
 	modelObject.GetComponent(BoxCollider).size = Vector3(.5,.5,10);
 	modelObject.AddComponent(Rigidbody);
 	modelObject.GetComponent(Rigidbody).isKinematic = true;
@@ -23,6 +24,7 @@ function init(m) {
 	model.renderer.material.color = Color(1,1,1);												// Set the color (easy way to tint things).
 	model.renderer.material.shader = Shader.Find ("Transparent/Diffuse");						// Tell the renderer that our textures have transparency
 	model.Manager = m;
+	model.modelObject = modelObject;
 	enabled = true;
 }
 

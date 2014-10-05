@@ -15,6 +15,8 @@ function Start () {
 	monsterFolder = new GameObject();
 	monsterFolder.name = "Monsters";
 	monsters = new Array();
+	tileFolder = new GameObject();
+	tileFolder.name = "Tiles";
 	tiles = new Array();
 
 	colorFolder = new GameObject();
@@ -26,9 +28,13 @@ function Start () {
 	addCircle(2); // yellow circle
 	addMonster(4, 3, character);
 	
+<<<<<<< HEAD
 	addWeapon(character);
 	
 	//protolevelInit();
+=======
+	protolevelInit();
+>>>>>>> FETCH_HEAD
 	
 }
 
@@ -58,20 +64,19 @@ function addCircle(color:int){
 	//var colorObject = new GameObject();					// Create a new empty game object that will hold a color.
 	var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
 	var colorScript = modelObject.AddComponent("ColorCircle");		// Add the color.js script to the object.
-	
 												
-	/*modelObject.collider.enabled = false;
+	modelObject.collider.enabled = false;
 	modelObject.AddComponent(BoxCollider);
 	modelObject.GetComponent(BoxCollider).isTrigger = true;
 	modelObject.GetComponent(BoxCollider).size = Vector3(.5,.5,.5);
-	modelObject.AddComponent(Rigidbody);
+	/*modelObject.AddComponent(Rigidbody);
 	modelObject.GetComponent(Rigidbody).isKinematic = true;
 	modelObject.GetComponent(Rigidbody).useGravity = false;
 	modelObject.GetComponent(Rigidbody).inertiaTensor = Vector3(1, 1, 1);
 */
 																																													// We can now refer to the object via this script.
 	colorScript.transform.parent = colorFolder.transform;	// Set the color's parent object to be the color folder.							
-	colorScript.init(color);							// Initialize the color script.
+	colorScript.init(color, character.model);							// Initialize the color script.
 	
 
 }
@@ -101,17 +106,26 @@ function addWeapon(c : Character){
 function addTile(x : float, y :float, t : String){
 	var tileObject = new GameObject();						// Create a new empty game object that will hold a character.
 	var tileScript = tileObject.AddComponent("Tile");		// Add the character.js script to the object.
-	tileScript.transform.position = Vector3(x,y,0);		// Position the character at x,y.								
+	
+	tileScript.transform.parent = tileFolder.transform;
+	tileScript.transform.position = Vector3(x,y,1);			// Position the character at x,y.								
 	
 	tileScript.init(t);
-	tileFolder.Add(tileScript);
+	tiles.Add(tileScript);
 	tileScript.name = "Tile" + tiles.length;
 }
 
 // ProtolevelInit
 // Initiates the prototype level.
 function protolevelInit(){
-  
-  
-  
+  for( i = -10; i <=10; i++) {
+    for( j = -10; j <=10; j++){
+      if( i == -10 || i == 10 || j == -10 || j == 10){
+      	addTile(i,j,"Wall");
+      }
+      else{
+      	addTile(i,j,"Floor");
+      }
+    }
+  }
 }
