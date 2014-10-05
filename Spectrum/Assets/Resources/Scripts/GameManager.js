@@ -1,47 +1,36 @@
-<<<<<<< HEAD
-﻿var characterFolder : GameObject;	// This will be an empty game object used for organizing heroes in the hierarchy pane.
+var characterFolder : GameObject;	// This will be an empty game object used for organizing heroes in the hierarchy pane.
 var monsterFolder : GameObject;		// This will be an empty game object used for organizing monsters in the hierarchy pane.
 var tileFolder : GameObject;		// This will be an empty game object used for organizing tiles in the hierarchy pane.
 var character : Character;			// This is the hero character.
 var monsters : Array;				// This array holds monsters.
 var tiles : Array;					// This array holds tiles.
 
-=======
-﻿var characterFolder : GameObject;	// This will be an empty game object used for organizing objects in the hierarchy pane.
+var characterFolder : GameObject;	// This will be an empty game object used for organizing objects in the hierarchy pane.
 var character : Character;			// This array will hold the character objects that are created.
 var colorFolder : GameObject;
 var monsterFolder : Array;
 var camera:GameObject;
->>>>>>> FETCH_HEAD
 
 // Called once when the script is created.
 function Start () {
 	characterFolder = new GameObject();  
 	characterFolder.name = "Character";
-<<<<<<< HEAD
 	monsterFolder = new GameObject();
 	monsterFolder.name = "Monsters";
 	monsters = new Array();
 	tiles = new Array();
 
-=======
 	colorFolder = new GameObject();
 	colorFolder.name = "Color Circles";
-	monsterFolder = new Array();
-//	monsterFolder.name = "Monsters";
->>>>>>> FETCH_HEAD
+	
 	addCharacter(0,0);
 	addCircle(0); // blue circle
 	addCircle(1); // red circle
 	addCircle(2); // yellow circle
 	addMonster(4, 3, character);
-<<<<<<< HEAD
 	
 	//protolevelInit();
 	
-=======
-
->>>>>>> FETCH_HEAD
 }
 
 // Called every frame.
@@ -65,8 +54,7 @@ function addCharacter(x : float , y : float) {
 	
 }
 
-<<<<<<< HEAD
-=======
+
 function addCircle(color:int){
 	//var colorObject = new GameObject();					// Create a new empty game object that will hold a color.
 	var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
@@ -90,7 +78,6 @@ function addCircle(color:int){
 }
 
 
->>>>>>> FETCH_HEAD
 function addMonster(x : float, y :float, c : Character){
 	var monsterObject = new GameObject();					// Create a new empty game object that will hold a character.
 	var monsterScript = monsterObject.AddComponent("Monster");		// Add the character.js script to the object.
