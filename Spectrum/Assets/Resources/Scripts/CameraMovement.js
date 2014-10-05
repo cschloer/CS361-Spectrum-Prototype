@@ -19,75 +19,11 @@ function Start () {
 	this.transform.position = Vector3(0,0,-10);
 	Manager = this.gameObject.transform.parent.GetComponent(GameManager);
 	character = Manager.character.model;
+//	character.camera = this.gameObject;
 	speed = 1;
 }
 
 function Update(){
-	if (Input.GetKeyUp("w")){
-		 moveN = false;
-		 character.moveN = false;
-	}
-	if (Input.GetKeyDown("w")) {
-		moveN = true;
-		character.moveN = true;
-	}	
-	if (Input.GetKeyUp("a")){
-		moveW = false;
-		character.moveW = false;	
-	}
-	if (Input.GetKeyDown("a")){
-		 moveW = true;
-		 character.moveW = true;
-		}
-	if (Input.GetKeyUp("s")){
-		moveS = false;
-		character.moveS = false;
-	}
-	if (Input.GetKeyDown("s")) {
-		moveS = true;
-		character.moveS = true;
-	}		
-	if (Input.GetKeyUp("d")) {
-		moveE = false;
-		character.moveE = false;
-	}
-	if (Input.GetKeyDown("d")) {
-		moveE = true;
-		character.moveE = true;
-	}	
-	
-	if (Input.GetKeyUp("e")){
-		if (!rotateR){
-			rotateL = false;
-			character.rotateL = false;
-		}
-	}
-	if (Input.GetKeyDown("e")) {
-		if (!rotateR){
-			rotateL = true;
-			character.rotateL = true;
-		}
-	}		
-	if (Input.GetKeyUp("q")) {
-		if(!rotateL){
-			rotateR = false;
-			character.rotateR = false;
-		}
-	}
-	if (Input.GetKeyDown("q")) {
-		if(!rotateL){
-			rotateR = true;
-			character.rotateR = true;
-		}
-	}
-	if (Input.GetKeyDown("space")) {
-		speed = 5;
-		character.speed = 5;
-	}
-	if (Input.GetKeyUp("space")) {
-		speed = 1;
-		character.speed =1;
-	}
 	
 
 	if (rotateR) this.gameObject.transform.Rotate(Vector3(0,0,Time.deltaTime*80*(speed)));
