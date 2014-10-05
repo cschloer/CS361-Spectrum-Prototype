@@ -20,7 +20,7 @@ var rollTimer:float;
 
 // Use this for initialization
 function Start () {
-	speed = 1;
+	speed = 2;
 	blue = false;
 	red = false;
 	yellow = false;
@@ -37,8 +37,8 @@ function Update () {
 			rolling = false;
 			this.renderer.material.color = Color(1,1,1);	
 			Manager.gameObject.GetComponentInChildren(CameraMovement).rolling = false;
-			speed = 1;
-			Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 1;
+			speed = 2;
+			Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 2;
 		}
 	
 	}
@@ -114,10 +114,7 @@ function Update () {
 		
 		}
 	}
-	/*if (Input.GetKeyUp("space")) {
-		speed = 1;
-		Manager.gameObject.GetComponentInChildren(CameraMovement).speed =1;
-	}*/
+	
 	
 	
 	
@@ -136,6 +133,7 @@ function Update () {
 		if (moveW) this.transform.Translate(Vector3.left * Time.deltaTime*speed);
 	
 	}	
+	Manager.gameObject.GetComponentInChildren(CameraMovement).doMovement();
 }
 
 function OnTriggerEnter(col:Collider){

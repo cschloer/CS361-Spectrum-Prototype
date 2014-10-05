@@ -21,10 +21,19 @@ function Start () {
 	Manager = this.gameObject.transform.parent.GetComponent(GameManager);
 	character = Manager.character.model;
 //	character.camera = this.gameObject;
-	speed = 1;
+	speed = 2;
 }
 
 function Update(){
+
+
+	
+
+
+	
+}
+
+function doMovement(){
 	if (rolling) this.gameObject.transform.Translate(Vector3.up * Time.deltaTime*speed);
 	else {
 		if (rotateR) this.gameObject.transform.Rotate(Vector3(0,0,Time.deltaTime*160*(speed)));
@@ -35,10 +44,6 @@ function Update(){
 		if (moveW) this.gameObject.transform.Translate(Vector3.left * Time.deltaTime*speed);
 	}
 
-	
-
-
-	
 }
 
 
