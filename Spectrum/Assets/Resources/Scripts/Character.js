@@ -23,6 +23,7 @@ function init(m) {
 	model.renderer.material.color = Color(1,1,1);												// Set the color (easy way to tint things).
 	model.renderer.material.shader = Shader.Find ("Transparent/Diffuse");						// Tell the renderer that our textures have transparency
 	model.Manager = m;
+	model.modelObject = modelObject;
 	enabled = true;
 }
 

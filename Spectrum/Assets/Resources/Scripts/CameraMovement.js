@@ -15,6 +15,7 @@ var rotateL:boolean;
 var rotateR:boolean;
 var speed:int;
 var rolling:boolean;
+var jumping:boolean;
 
 function Start () {
 	this.transform.position = Vector3(0,0,-10);
@@ -22,6 +23,8 @@ function Start () {
 	character = Manager.character.model;
 //	character.camera = this.gameObject;
 	speed = 2;
+	rolling = false;
+	jumping = false;
 }
 
 function Update(){
