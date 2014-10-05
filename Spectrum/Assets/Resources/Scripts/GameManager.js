@@ -26,6 +26,8 @@ function Start () {
 	addCircle(2); // yellow circle
 	addMonster(4, 3, character);
 	
+	addWeapon(character);
+	
 	//protolevelInit();
 	
 }
@@ -85,6 +87,15 @@ function addMonster(x : float, y :float, c : Character){
 	monsterScript.init(c);
 	monsters.Add(monsterScript);
 	monsterScript.name = "Monster"+ monsters.length;
+}
+
+function addWeapon(c : Character){
+	var weaponObject = new GameObject();
+	var weaponScript = weaponObject.AddComponent("Weapon");
+	
+	weaponScript.transform.position = character.transform.position;
+	
+	weaponScript.init(c);
 }
 
 function addTile(x : float, y :float, t : String){

@@ -20,6 +20,15 @@ public class Monster extends MonoBehaviour
 		model.renderer.material.mainTexture = Resources.Load("Textures/gem1", Texture2D);	// Set the texture.  Must be in Resources folder.
 		model.renderer.material.color = Color(1,1,1);												// Set the color (easy way to tint things).
 		model.renderer.material.shader = Shader.Find ("Transparent/Diffuse");						// Tell the renderer that our textures have transparency. 
+	
+		modelObject.collider.enabled = false;
+ 		modelObject.AddComponent(BoxCollider);
+		modelObject.GetComponent(BoxCollider).isTrigger = true;
+ 		modelObject.GetComponent(BoxCollider).size = Vector3(.5,.5,.5);
+ 		modelObject.AddComponent(Rigidbody);
+		modelObject.GetComponent(Rigidbody).isKinematic = true;
+ 		modelObject.GetComponent(Rigidbody).useGravity = false;
+ 		modelObject.GetComponent(Rigidbody).inertiaTensor = Vector3(1, 1, 1);
 	}
 	
 	public function move(){
