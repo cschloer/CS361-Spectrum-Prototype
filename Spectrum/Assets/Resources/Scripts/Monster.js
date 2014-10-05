@@ -3,8 +3,8 @@ public class Monster extends MonoBehaviour
 {
 	public var model : MonsterModel;
 	public var hero : Character;
-	public var moveSpeed : float;
-	public var turnSpeed : float;
+	public var moveSpeed : float;  //Tiles per second
+	public var turnSpeed : float;  //Degrees Per second
 
 	public function init(c : Character) {
 		hero = c;
@@ -12,7 +12,7 @@ public class Monster extends MonoBehaviour
 		model = modelObject.AddComponent("MonsterModel");						// Add a gemModel script to control visuals of the gem.
 		//gemType = 1;
 		moveSpeed = 1;
-		turnSpeed = 1;
+		turnSpeed = 90;
 			
 		model.transform.parent = transform;									// Set the model's parent to the gem (this object).
 		model.transform.localPosition = Vector3(0,0,0);						// Center the model on the parent.
@@ -23,19 +23,58 @@ public class Monster extends MonoBehaviour
 	}
 	
 	public function move(){
-		transform.Translate(Vector3.up * Time.deltaTime*moveSpeed);
+		move(1);
 	}
 	
 	public function move(multiplier : float){
-		transform.Translate(Vector3.up * Time.deltaTime*moveSpeed*multiplier);
+		transform.Translate(model.transform.rotation * Time.deltaTime*moveSpeed*multiplier);
 	}
+	public function moveLeft(){
+		moveLeft(1);
+	}
+	
+	public function moveLeft(multiplier : float){
+		transform.Translate(Vector3.left * Time.deltaTime*moveSpeed*multiplier);
+	}
+	
+	public function moveRight(){
+		moveRight(1);
+	}
+	
+	public function moveRight(multiplier : float){
+		transform.Translate(Vector3.right * Time.deltaTime*moveSpeed*multiplier);
+	}
+	public function turnRight(m : float){
+		model.transform.eulerAngles += Vector3(0, 0, Time.deltaTime * turnSpeed * m * -1);
+	}
+	public function turnRight(){
+		turnRight(1);
+	}
+	
+	public function turnLeft(m : float){
+		model.transform.eulerAngles += Vector3(0, 0, Time.deltaTime * turnSpeed * m * 1);
+	}
+	public function turnLeft(){
+		turnLeft(1);
+	}
+
+		
+	public function turnToHero(multiplier : float){
+		var vectorToHero : Vector3 = model.transform.position - hero.model.transform.position;
+		var anglesToHero : float = Mathf.Atan2(vectorToHero.y, vectorToHero.x) * Mathf.Rad2Deg - 90;
+		if (anglesToHero < 0) anglesToHero += 360;
+		//print("AnglestoHero: " + anglesToHero + ", Z: " + model.transform.eulerAngles.z);
+		var sign : float = -1;
+		if((model.transform.eulerAngles.z + (360-anglesToHero)) % 360 < 180) sign = 1;
+		model.transform.eulerAngles += Vector3(0, 0, Time.deltaTime * turnSpeed * sign * multiplier);
+	}
+	
 	public function turnToHero(){
-		var referenceRight : Vector3 = Vector3.Cross(Vector3.up, model.transform.eulerAngles);
-		var sign : float = Mathf.Sign(Vector3.Dot(model.transform.eulerAngles - hero.model.transform.eulerAngles, referenceRight));
-		model.transform.eulerAngles += Vector3(0, 0, turnSpeed * Time.deltaTime * 80);
+		turnToHero(1);
 	}
 	
 	function Update(){
+		move();
 		turnToHero();
 	}
 }
