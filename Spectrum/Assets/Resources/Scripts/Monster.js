@@ -27,14 +27,21 @@ public class Monster extends MonoBehaviour
 	}
 	
 	public function move(multiplier : float){
-		transform.Translate(model.transform.rotation * Time.deltaTime*moveSpeed*multiplier);
+		transform.position += model.transform.up * Time.deltaTime*moveSpeed*multiplier;
+	}
+	public function moveBack(){
+		moveBackward(1);
+	}
+	
+	public function moveBack(multiplier : float){
+		transform.position += -1*model.transform.up * Time.deltaTime*moveSpeed*multiplier;
 	}
 	public function moveLeft(){
 		moveLeft(1);
 	}
 	
 	public function moveLeft(multiplier : float){
-		transform.Translate(Vector3.left * Time.deltaTime*moveSpeed*multiplier);
+		transform.position += -1*model.transform.right * Time.deltaTime*moveSpeed*multiplier;
 	}
 	
 	public function moveRight(){
@@ -42,7 +49,7 @@ public class Monster extends MonoBehaviour
 	}
 	
 	public function moveRight(multiplier : float){
-		transform.Translate(Vector3.right * Time.deltaTime*moveSpeed*multiplier);
+		transform.position += 1*model.transform.right * Time.deltaTime*moveSpeed*multiplier;
 	}
 	public function turnRight(m : float){
 		model.transform.eulerAngles += Vector3(0, 0, Time.deltaTime * turnSpeed * m * -1);
@@ -56,6 +63,10 @@ public class Monster extends MonoBehaviour
 	}
 	public function turnLeft(){
 		turnLeft(1);
+	}
+	
+	public function distanceToHero(){
+		return Vector3.Magnitude(model.transform.position - hero.model.transform.position);
 	}
 
 		
@@ -74,7 +85,16 @@ public class Monster extends MonoBehaviour
 	}
 	
 	function Update(){
-		move();
-		turnToHero();
+		circlingBehaviour(2);
 	}
+	
+	public function circlingBehaviour(distance : float){
+		moveRight();
+		if(distanceToHero() > distance){
+			move();
+		} else {
+			moveBack();
+		}
+	}
+	
 }
