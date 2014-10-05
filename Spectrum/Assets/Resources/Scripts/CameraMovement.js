@@ -27,8 +27,8 @@ function Start () {
 function Update(){
 	if (rolling) this.gameObject.transform.Translate(Vector3.up * Time.deltaTime*speed);
 	else {
-		if (rotateR) this.gameObject.transform.Rotate(Vector3(0,0,Time.deltaTime*80*(speed)));
-		if (rotateL) this.gameObject.transform.Rotate(Vector3(0,0,-Time.deltaTime*80*(speed)));
+		if (rotateR) this.gameObject.transform.Rotate(Vector3(0,0,Time.deltaTime*160*(speed)));
+		if (rotateL) this.gameObject.transform.Rotate(Vector3(0,0,-Time.deltaTime*160*(speed)));
 		if (moveN) this.gameObject.transform.Translate(Vector3.up * Time.deltaTime*speed);
 		if (moveE) this.gameObject.transform.Translate(Vector3.right * Time.deltaTime*speed);
 		if (moveS) this.gameObject.transform.Translate(Vector3.down * Time.deltaTime*speed);

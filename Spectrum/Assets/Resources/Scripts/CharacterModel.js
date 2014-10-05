@@ -125,10 +125,10 @@ function Update () {
 	if (!rolling){
 	
 		if (rotateR) {
-			this.transform.Rotate(Vector3(0,0,Time.deltaTime*80*(speed)));
+			this.transform.Rotate(Vector3(0,0,Time.deltaTime*160*(speed)));
 			
 		}
-		if (rotateL) this.transform.Rotate(Vector3(0,0,-Time.deltaTime*80*(speed)));
+		if (rotateL) this.transform.Rotate(Vector3(0,0,-Time.deltaTime*160*(speed)));
 		
 		if (moveN) this.transform.Translate(Vector3.up * Time.deltaTime*speed);
 		if (moveE) this.transform.Translate(Vector3.right * Time.deltaTime*speed);
