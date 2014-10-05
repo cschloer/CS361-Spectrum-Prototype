@@ -28,13 +28,11 @@ function Start () {
 	addCircle(2); // yellow circle
 	addMonster(4, 3, character);
 	
-<<<<<<< HEAD
 	addWeapon(character);
 	
-	//protolevelInit();
-=======
+
 	protolevelInit();
->>>>>>> FETCH_HEAD
+
 	
 }
 

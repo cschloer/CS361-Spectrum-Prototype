@@ -1,27 +1,64 @@
-﻿#pragma strict
+#pragma strict
 public class Weapon extends MonoBehaviour{
 	public var owner : Character;
 	public var model : WeaponModel;
+	public var baseRotation : Vector3;
+	public var basePosition : Vector3;
+	//public var rotationPoint : Vector3;
+	public var swinging : boolean;
+	public var recovering : boolean;
 	function init(c){
+		swinging = false;
+		recovering = false;
 		owner = c;
-		var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
-		model = modelObject.AddComponent("WeaponModel");						// Add a gemModel script to control visuals of the gem.
-			
-		model.transform.parent = owner.model.transform;									// Set the model's parent to the gem (this object).
-		model.transform.localPosition = Vector3(0,1,0);						// Center the model on the parent.
-		model.name = "Weapon Model";											// Name the object.
-		model.renderer.material.mainTexture = Resources.Load("Textures/stick2", Texture2D);	// Set the texture.  Must be in Resources folder.
-		model.renderer.material.color = Color(1,1,1);												// Set the color (easy way to tint things).
-		model.renderer.material.shader = Shader.Find ("Transparent/Diffuse");						// Tell the renderer that our textures have transparency. 
-	
-	
-		modelObject.collider.enabled = false;
- 		modelObject.AddComponent(BoxCollider);
-		modelObject.GetComponent(BoxCollider).isTrigger = true;
- 		modelObject.GetComponent(BoxCollider).size = Vector3(.5,.5,.5);
- 		modelObject.AddComponent(Rigidbody);
-		modelObject.GetComponent(Rigidbody).isKinematic = true;
- 		modelObject.GetComponent(Rigidbody).useGravity = false;
- 		modelObject.GetComponent(Rigidbody).inertiaTensor = Vector3(1, 1, 1);
+		owner.setWeapon(this);
+		var weaponObject = new GameObject();
+		weaponObject.name = "Weapon";
+		//weaponObject.collider.enabled = false;
+		
+		baseRotation = Vector3(0, 0, -55);
+		basePosition = Vector3(0, 0, 0);
+	 	weaponObject.AddComponent(BoxCollider);
+	 	weaponObject.GetComponent(BoxCollider).isTrigger = true;
+	 	weaponObject.GetComponent(BoxCollider).size = Vector3(.1,2,.5);
+	 	weaponObject.AddComponent(Rigidbody);
+	 	weaponObject.GetComponent(Rigidbody).isKinematic = true;
+	 	weaponObject.GetComponent(Rigidbody).useGravity = false;
+	 	weaponObject.GetComponent(Rigidbody).inertiaTensor = Vector3(1, 1, 1);
+		model = weaponObject.AddComponent("WeaponModel");
+		model.transform.parent = owner.model.transform;								
+		model.transform.localPosition = basePosition;						
+		model.transform.localEulerAngles = baseRotation;						
+		var spriteRenderer = weaponObject.AddComponent("SpriteRenderer") as SpriteRenderer;
+		spriteRenderer.sprite = UnityEngine.Sprite.Create(Resources.Load("Textures/stick2", Texture2D), new Rect(40,0,60,100), new Vector2(0.5f, 0), 100f);
  		}
+ 		
+ 		
+ 	function swing(angle : int, time : float, recovery : float){
+ 		swinging = true;
+ 		var t : float = 0;
+ 		while (t < time){
+ 			t += Time.deltaTime;
+ 			//model.transform.eulerAngles = baseRotation + Vector3(0, 0, angle*(t/time));
+ 			model.transform.RotateAround(model.transform.position, Vector3.forward, angle/time * Time.deltaTime);
+ 			yield;
+ 		}
+ 		
+ 		swinging = false;
+ 		recovering = true;
+ 		while (t < time + recovery){
+ 			t += Time.deltaTime;
+ 			model.transform.RotateAround(model.transform.position, Vector3.forward, -angle/recovery * Time.deltaTime);
+ 			yield;
+ 		}
+ 		model.transform.localEulerAngles = baseRotation;
+ 		model.transform.localPosition = basePosition;
+ 		recovering = false;
+ 	}
+ 	
+ 	function Update(){
+ 		if(Input.GetKeyDown("left shift") && !swinging && !recovering){
+ 			swing(110, .3, 1);
+ 		}
+ 	}
  }

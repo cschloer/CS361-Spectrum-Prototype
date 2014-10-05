@@ -1,5 +1,5 @@
 ﻿var model : CharacterModel;
-
+var weapon : Weapon;
 function init(m) {
 	enabled = false;
 	var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
@@ -26,5 +26,9 @@ function init(m) {
 	model.Manager = m;
 	model.modelObject = modelObject;
 	enabled = true;
+}
+
+function setWeapon(w : Weapon){
+	weapon = w;
 }
 
