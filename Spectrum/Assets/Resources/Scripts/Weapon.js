@@ -49,7 +49,16 @@ public class Weapon extends MonoBehaviour{
  	}
  	function stopSwinging(){
  		swinging = false;
- 		model.renderer.material.color = Color(.8,.5,.5);
+ 		model.renderer.material.color = Color(.8,.6,.6);
+ 	}
+ 	function startRecovery(){
+ 		recovering = true;
+ 		model.renderer.material.color = Color(.7,.5,.5);
+
+ 	}
+ 	function stopRecovery(){
+ 		recovering = false;
+ 		model.renderer.material.color = Color(.8,.6,.6);
  	}
  	
  	function swing(angle : int, time : float, recovery : float){
@@ -64,7 +73,7 @@ public class Weapon extends MonoBehaviour{
  		}
  		
  		stopSwinging();
- 		recovering = true;
+		startRecovery();
  		while (t < time + recovery){
  			t += Time.deltaTime;
  			model.transform.RotateAround(model.transform.position, Vector3.forward, -angle/recovery * Time.deltaTime);
@@ -72,7 +81,7 @@ public class Weapon extends MonoBehaviour{
  		}
  		model.transform.localEulerAngles = baseRotation;
  		model.transform.localPosition = basePosition;
- 		recovering = false;
+ 		stopRecovery();
  	}
 
 	function spin(time : float, recovery : float, overshoot : float){
@@ -86,7 +95,7 @@ public class Weapon extends MonoBehaviour{
  			yield;
  		}
  		stopSwinging();
- 		recovering = true;
+ 		startRecovery();
  		t=0;
  		
  		while (t < recovery){
@@ -96,7 +105,7 @@ public class Weapon extends MonoBehaviour{
  		}
  		model.transform.localEulerAngles = baseRotation;
  		model.transform.localPosition = basePosition;
- 		recovering = false;
+ 		stopRecovery();
  	}
 	
   	function toss(distance : float, time : float, spinSpeed : float, recovery : float){
@@ -123,23 +132,32 @@ public class Weapon extends MonoBehaviour{
 		model.transform.localEulerAngles = baseRotation;
  		model.transform.localPosition = basePosition;
  		model.transform.position = owner.model.transform.position;
- 		
+ 		model.transform.localScale = owner.model.transform.localScale;
  		stopSwinging();
- 		recovering = true;
- 		while (t < time + recovery){
+ 		startRecovery();
+ 		t=0;
+ 		while (t < recovery){
  			t += Time.deltaTime;
  			yield;
  		}
  		
- 		recovering = false;
+ 		stopRecovery();
  	}
  		
  	function Update(){
  		if(Input.GetKeyDown("left shift") && !swinging && !recovering && owner.model.yellow){
  			if(owner.model.jumping){
- 				spin(.5, 1.5, 110);
+ 				if(!owner.model.red){
+ 					spin(.5, 1.5, 110);
+ 				} else{
+ 					spin(1, 2.5, 110);
+ 				}
  			} else{
- 				swing(110, .3, 1);
+ 				if(!owner.model.red){
+ 					swing(110, .3, 1);
+ 				} else {
+ 					swing(110, .5, 1.5);
+ 				}
  			}
  		}
  		if(Input.GetKeyDown("left shift") && !swinging && !recovering && !owner.model.yellow){
