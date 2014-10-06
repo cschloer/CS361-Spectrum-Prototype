@@ -8,6 +8,7 @@ public class Weapon extends MonoBehaviour{
 	//public var rotationPoint : Vector3;
 	public var swinging : boolean;
 	public var recovering : boolean;
+	public var swingSound : AudioSource; //Need one of these for each different clip.
 	function init(c){
 		this.name = "Weapon";
 		recovering = false;
@@ -36,6 +37,9 @@ public class Weapon extends MonoBehaviour{
 		spriteRenderer.sprite = UnityEngine.Sprite.Create(Resources.Load("Textures/stick2", Texture2D), new Rect(40,0,60,100), new Vector2(0.5f, 0), 100f);
  		resetPosition();
 		stopSwinging();
+		
+		swingSound = gameObject.AddComponent("AudioSource") as AudioSource; //Initialized AudioSource
+		swingSound.clip = Resources.Load("Sounds/woosh"); //Loads proper clip. In Unity Editor make sure "3D Sound" is UNCHECKED. It's checked by default. MP3s seem to work well and Audacity can export them.
 
  		}
  		
@@ -63,6 +67,8 @@ public class Weapon extends MonoBehaviour{
  	}
  	
  	function swing(angle : int, time : float, recovery : float){
+ 		swingSound.Play(); // Plays the sound
+
  		startSwinging();
  		var t : float = 0;
  		while (t < time){
