@@ -166,7 +166,8 @@ public class Monster extends MonoBehaviour
 			simpleBullet();
 		}
 	}
-	
+	//A generic attack. Width and depth are bullet dimensions. If fade is true, attack becomes translucent as it moves.
+	//Keywords can be used for specific hit behaviours (stun, slow, knockback, etc) to be implemented in CharacterModel's OnTriggerEnter.
 	function attack(range : float, speed : float, width :float, depth : float, color : Color, fade : boolean, keyword : String){
 		var attackObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	
 		var attack : MonsterAttack = attackObject.AddComponent("MonsterAttack");						
@@ -203,10 +204,11 @@ public class Monster extends MonoBehaviour
 			moveBack();
 		}
 	}
-	
+	//Example melee attack
 	function simpleMelee(){
 		attack(1, 4, 1, .2, Color(1, 1, 1), true, "melee");
 	}
+	//Example ranged attack
 	function simpleBullet(){
 		attack(5, 2.5, .3, .3, Color(1, 0, 1), false, "bullet");
 	}
