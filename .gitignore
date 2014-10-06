@@ -35,3 +35,7 @@ Spectrum/Library/ScriptAssemblies/Assembly-UnityScript.dll.mdb
 Spectrum/Assets/Resources/Scripts/Monster.js
 
 Spectrum/Library/ScriptAssemblies/Assembly-UnityScript.dll
+
+*.dll
+
+Spectrum/Library/ScriptAssemblies/Assembly-UnityScript.dll

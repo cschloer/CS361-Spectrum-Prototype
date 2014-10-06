@@ -38,6 +38,7 @@ function init(m) {
 public function hurt(){
 		health--;
 		hurting = true;
+		var before = model.renderer.material.color;
 		model.renderer.material.color = Color(.5,.5,.5);
 
 		var t : float = hurtRecovery;
@@ -46,7 +47,7 @@ public function hurt(){
 			yield;
 		}
 		hurting = false;
-		model.renderer.material.color = Color(1,1,1);
+		model.renderer.material.color = before;
 
 	}
 
