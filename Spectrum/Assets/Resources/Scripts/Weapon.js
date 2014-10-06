@@ -27,14 +27,16 @@ public class Weapon extends MonoBehaviour{
 	 	weaponObject.GetComponent(Rigidbody).isKinematic = false;
 	 	weaponObject.GetComponent(Rigidbody).useGravity = false;
 	 	weaponObject.GetComponent(Rigidbody).inertiaTensor = Vector3(1, 1, 1);
-	 	weaponObject.transform.parent = this.transform;
+	 	weaponObject.transform.parent = owner.model.transform;
 		model = weaponObject.AddComponent("WeaponModel");
 		model.weapon = this;
-		model.transform.parent = owner.model.transform;								
+		model.transform.parent = weaponObject.transform;								
 		model.transform.localPosition = basePosition;						
 		model.transform.localEulerAngles = baseRotation;						
 		var spriteRenderer = weaponObject.AddComponent("SpriteRenderer") as SpriteRenderer;
 		spriteRenderer.sprite = UnityEngine.Sprite.Create(Resources.Load("Textures/stick2", Texture2D), new Rect(40,0,60,100), new Vector2(0.5f, 0), 100f);
+ 		resetPosition();
+
  		}
  		
  	function distanceFromOwner(){
@@ -110,5 +112,15 @@ public class Weapon extends MonoBehaviour{
  	function OnTriggerEnter(col:Collider){
 		print("Weapon collided with " + col.gameObject.name);
 	}
+	
+	function resetPosition(){
+		while (true){
+			if(!swinging)
+				model.transform.position = owner.model.transform.position;
+			yield WaitForSeconds(.01);
+			//print("Test");
+		}
+	}
+	
 	
  }

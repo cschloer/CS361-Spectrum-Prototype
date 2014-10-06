@@ -145,7 +145,7 @@ public class Monster extends MonoBehaviour
 		flee(2, hurtRecovery); //Might want to be taken out and added only for specific monsters (by overriding hurt)
 		health--;
 		hurting = true;
-		model.renderer.material.color = Color(2,2,2);
+		model.renderer.material.color = Color(.5,.5,.5);
 
 		var t : float = hurtRecovery;
 		while (t > 0){

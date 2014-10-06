@@ -3,11 +3,12 @@ var weapon : Weapon;
 var hurtRecovery : float;
 var hurting : boolean;
 var health : int;
+var modelObject : GameObject;
 function init(m) {
 	health = 3;
 	hurtRecovery = .5;
 	enabled = false;
-	var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
+	modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
 	model = modelObject.AddComponent("CharacterModel");						// Add a gemModel script to control visuals of the gem.
 	//gemType = 1;
 	modelObject.collider.enabled = false;
@@ -36,7 +37,7 @@ function init(m) {
 public function hurt(){
 		health--;
 		hurting = true;
-		model.renderer.material.color = Color(2,2,2);
+		model.renderer.material.color = Color(.5,.5,.5);
 
 		var t : float = hurtRecovery;
 		while (t > 0){

@@ -35,6 +35,7 @@ function Start () {
 
 // Update is called once per frame
 function Update () {
+	transform.position.z = 0;
 
 	if (rolling){
 		rjTimer += Time.deltaTime;
@@ -54,7 +55,8 @@ function Update () {
 			jumping = false;
 			this.renderer.material.color = Color(1,1,1);	
 			Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = false;
-			modelObject.GetComponent(BoxCollider).isTrigger = false;
+			//modelObject.GetComponent(BoxCollider).isTrigger = false;
+			gameObject.GetComponent(BoxCollider).isTrigger = false;
 		}
 	}
 	if (Input.GetKeyUp("w")){
@@ -240,5 +242,6 @@ function OnDrawGizmos() {
 		// Draw a yellow cube at the transforms position
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawWireCube (transform.position, modelObject.GetComponent(BoxCollider).size);
+	
 }
 
