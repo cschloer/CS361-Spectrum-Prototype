@@ -44,7 +44,7 @@ public class Monster extends MonoBehaviour
 	}
 	//Move forward at given speed factor
 	public function move(multiplier : float){
-		transform.position += model.transform.up * Time.deltaTime*moveSpeed*multiplier;
+		model.transform.position += model.transform.up * Time.deltaTime*moveSpeed*multiplier;
 	}
 	
 	//Move backward at default speed
@@ -53,7 +53,7 @@ public class Monster extends MonoBehaviour
 	}
 	//Move backward at given speed factor
 	public function moveBack(multiplier : float){
-		transform.position += -1*model.transform.up * Time.deltaTime*moveSpeed*multiplier;
+		model.transform.position += -1*model.transform.up * Time.deltaTime*moveSpeed*multiplier;
 	}
 	
 	//Strafe left
@@ -62,7 +62,7 @@ public class Monster extends MonoBehaviour
 	}
 	//Strafe left at given speed
 	public function moveLeft(multiplier : float){
-		transform.position += -1*model.transform.right * Time.deltaTime*moveSpeed*multiplier;
+		model.transform.position += -1*model.transform.right * Time.deltaTime*moveSpeed*multiplier;
 	}
 	//Strafe right
 	public function moveRight(){
@@ -70,12 +70,12 @@ public class Monster extends MonoBehaviour
 	}
 	//Strafe right at given speed
 	public function moveRight(multiplier : float){
-		transform.position += 1*model.transform.right * Time.deltaTime*moveSpeed*multiplier;
+		model.transform.position += 1*model.transform.right * Time.deltaTime*moveSpeed*multiplier;
 	}
 	//Strafe toward hero at given speed
 	public function moveTowardHero(m : float){
 		var toHero : Vector3 = hero.model.transform.position - model.transform.position;
-		transform.position += toHero.normalized * Time.deltaTime*moveSpeed * m;
+		model.transform.position += toHero.normalized * Time.deltaTime*moveSpeed * m;
 	}
 	//Strafe toward hero at default speed
 	public function moveTowardHero(){
@@ -85,7 +85,7 @@ public class Monster extends MonoBehaviour
 	//Strafe away from hero at given speed
 	public function moveFromHero(m : float){
 		var toHero : Vector3 = hero.model.transform.position - model.transform.position;
-		transform.position += toHero.normalized * Time.deltaTime*moveSpeed * m * -1;
+		model.transform.position += toHero.normalized * Time.deltaTime*moveSpeed * m * -1;
 	}
 	
 	//Strafe away from hero at default speed
@@ -140,7 +140,7 @@ public class Monster extends MonoBehaviour
 	
 	//Subroutine - call once, runs concurrently.
 	public function hurt(){
-		flee(1, hurtRecovery); //Might want to be taken out and added only for specific monsters (by overriding hurt)
+		flee(2, hurtRecovery); //Might want to be taken out and added only for specific monsters (by overriding hurt)
 		health--;
 		hurting = true;
 		model.renderer.material.color = Color(2,2,2);

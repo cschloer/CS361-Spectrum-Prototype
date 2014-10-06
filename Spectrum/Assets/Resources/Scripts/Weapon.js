@@ -37,7 +37,10 @@ public class Weapon extends MonoBehaviour{
 		spriteRenderer.sprite = UnityEngine.Sprite.Create(Resources.Load("Textures/stick2", Texture2D), new Rect(40,0,60,100), new Vector2(0.5f, 0), 100f);
  		}
  		
- 		
+ 	function distanceFromOwner(){
+ 		return Vector3.Magnitude(model.transform.position - owner.model.transform.position);
+ 	}
+ 	
  	function swing(angle : int, time : float, recovery : float){
  		swinging = true;
  		var t : float = 0;
@@ -60,9 +63,47 @@ public class Weapon extends MonoBehaviour{
  		recovering = false;
  	}
  	
+ 	function toss(distance : float, time : float, spinSpeed : float, recovery : float){
+ 		model.transform.parent = null;
+ 		var heading : Vector3 = owner.model.transform.up;
+ 		Vector3.Normalize(heading);
+ 		swinging = true;
+ 		var t : float = 0;
+ 		while (t < time){
+ 			t += Time.deltaTime;
+ 			model.transform.RotateAround(model.transform.position, Vector3.forward, spinSpeed * Time.deltaTime);
+ 			model.transform.position += (heading * distance * Time.deltaTime / time);
+ 			yield;
+ 		}
+ 		t=0;
+ 		while (distanceFromOwner() > .1){
+ 			t += Time.deltaTime;
+ 			model.transform.RotateAround(model.transform.position, Vector3.forward, spinSpeed * Time.deltaTime);
+ 			heading = model.transform.position - owner.model.transform.position;
+ 			model.transform.position -= (heading.normalized *distance * Time.deltaTime / time);
+ 			yield;
+ 		}
+ 		model.transform.parent = owner.model.transform;
+		model.transform.localEulerAngles = baseRotation;
+ 		model.transform.localPosition = basePosition;
+ 		model.transform.position = owner.model.transform.position;
+ 		
+ 		swinging = false;
+ 		recovering = true;
+ 		while (t < time + recovery){
+ 			t += Time.deltaTime;
+ 			yield;
+ 		}
+ 		
+ 		recovering = false;
+ 	}
+ 		
  	function Update(){
- 		if(Input.GetKeyDown("left shift") && !swinging && !recovering){
+ 		if(Input.GetKeyDown("left shift") && !swinging && !recovering && owner.model.yellow){
  			swing(110, .3, 1);
+ 		}
+ 		if(Input.GetKeyDown("left shift") && !swinging && !recovering && !owner.model.yellow){
+ 			toss(4, 1.0, 500, 1);
  		}
  	}
  	
