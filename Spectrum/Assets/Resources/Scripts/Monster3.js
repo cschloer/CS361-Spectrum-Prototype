@@ -1,6 +1,6 @@
 
 // Fast attacker
 
-public class Monster1 extends Monster {
+public class Monster3 extends Monster {
 
 }
