@@ -8,13 +8,14 @@ public class Monster extends MonoBehaviour
 	public var health : int; //Max/starting health
 	public var hurtRecovery : float; //Time spend invincible after hit
 	public var hurting : boolean; //Marker boolean for whether it was just hurt
+	public var modelObject : GameObject;
 
 	public function init(c : Character) {
 		hero = c;
 		hurting = false;
 		health = 3;
 		hurtRecovery = .6;
-		var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
+		modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
 		model = modelObject.AddComponent("MonsterModel");						// Add a gemModel script to control visuals of the gem.
 		model.monster = this;
 		//gemType = 1;
@@ -169,13 +170,29 @@ public class Monster extends MonoBehaviour
 	
 
 	function Update(){
+		if(health > 0){
+			act();
+		}else if (health > -100){
+			die(1);
+			health -= 101;
+		}		
+	}
+	function die(deathTime : float){
+		var t : float = 0;
+		while (t < deathTime){
+			t += Time.deltaTime;
+			model.renderer.material.color.a = 1-(t/deathTime);
+			yield;
+		}
+		Destroy(modelObject);
+	}
+	function act(){
 		model.transform.position.z = 0;
 		circlingBehaviour(2);
 		if(Random.value > .99){
 			simpleBullet();
 		}
 	}
-	
 	//A generic attack. 
 	//Width and depth are bullet dimensions. 
 	//If fade is true, attack becomes translucent as it moves.
