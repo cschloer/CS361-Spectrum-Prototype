@@ -21,6 +21,7 @@ var rjTimer:float;
 var character : Character;
 var modelObject;
 
+var walkclip : AnimationClip;
 
 
 // Use this for initialization
@@ -30,7 +31,7 @@ function Start () {
 	red = false;
 	yellow = false;
 	rolling = false;
-
+	
 }
 
 // Update is called once per frame
@@ -121,6 +122,7 @@ function Update () {
 	if (Input.GetKeyDown("space")) {
 		if (!jumping && !rolling) { 
 			if (!blue){ // roll because blue
+				// todo: roll animation
 				this.renderer.material.color = Color(.5,.5,.5);
 				speed = 10;
 				Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 10;
@@ -129,6 +131,7 @@ function Update () {
 				rjTimer = 0;
 			}
 			else { // jump because not blue
+				// todo: jump animation
 				this.renderer.material.color = Color(2,2,2);
 				jumping = true;
 				Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = true;
@@ -232,6 +235,8 @@ function stopMovement(){
 	Manager.gameObject.GetComponentInChildren(CameraMovement).moveS = false;
 	moveN = false;
 	Manager.gameObject.GetComponentInChildren(CameraMovement).moveN = false;
+	
+	//todo: stop moving animation
 }
 
 function OnTriggerEnter(col:Collider){
