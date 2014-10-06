@@ -8,5 +8,5 @@ function Update () {
 
 }
 function OnTriggerEnter(col:Collider){
-		if(col.gameObject.GetComponent(WeaponModel).weapon.swinging && !monster.hurting) monster.hurt();
+		if(col.gameObject.name == "WeaponObject" && col.gameObject.GetComponent(WeaponModel).weapon.swinging && !monster.hurting) monster.hurt();
 	}

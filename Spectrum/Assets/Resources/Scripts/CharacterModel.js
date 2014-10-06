@@ -18,7 +18,7 @@ var jumping:boolean;
 
 var rjTimer:float;
 
-
+var character : Character;
 var modelObject;
 
 
@@ -228,6 +228,12 @@ function stopMovement(){
 	Manager.gameObject.GetComponentInChildren(CameraMovement).moveS = false;
 	moveN = false;
 	Manager.gameObject.GetComponentInChildren(CameraMovement).moveN = false;
+}
+
+function OnTriggerEnter(col:Collider){
+	if(col.gameObject.name.Contains("attack") && !character.hurting){
+		character.hurt();
+	}
 }
 
 function OnDrawGizmos() {

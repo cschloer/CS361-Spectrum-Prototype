@@ -1,6 +1,11 @@
 ﻿var model : CharacterModel;
 var weapon : Weapon;
+var hurtRecovery : float;
+var hurting : boolean;
+var health : int;
 function init(m) {
+	health = 3;
+	hurtRecovery = .5;
 	enabled = false;
 	var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
 	model = modelObject.AddComponent("CharacterModel");						// Add a gemModel script to control visuals of the gem.
@@ -17,7 +22,7 @@ function init(m) {
 	modelObject.GetComponent(Rigidbody).freezeRotation = true;
 
 		
-				
+	model.character = this;			
 	model.transform.parent = transform;									// Set the model's parent to the gem (this object).
 	model.transform.localPosition = Vector3(0,0,0);						// Center the model on the parent.
 	model.name = "Character Model";											// Name the object.
@@ -28,6 +33,20 @@ function init(m) {
 	model.modelObject = modelObject;
 	enabled = true;
 }
+public function hurt(){
+		health--;
+		hurting = true;
+		model.renderer.material.color = Color(2,2,2);
+
+		var t : float = hurtRecovery;
+		while (t > 0){
+			t -= Time.deltaTime;
+			yield;
+		}
+		hurting = false;
+		model.renderer.material.color = Color(1,1,1);
+
+	}
 
 function setWeapon(w : Weapon){
 	weapon = w;

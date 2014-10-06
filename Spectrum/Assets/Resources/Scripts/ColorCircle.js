@@ -45,18 +45,19 @@ function Update(){
 }
 
 function OnTriggerEnter(col:Collider){
-	switch(color){
-		case 0:
-			character.changeBlue();
-			break;
-		case 1:
-			character.changeRed();
-			break;
-		case 2:
-			character.changeYellow();
-			break;
+	if(col.gameObject.name.Contains("Character")){
+		switch(color){
+			case 0:
+				character.changeBlue();
+				break;
+			case 1:
+				character.changeRed();
+				break;
+			case 2:
+				character.changeYellow();
+				break;
+		}
 	}
-	
 	/*if (col.gameObject.name.Contains("Blue")){
 		if (blue) blue = false;
 		else blue = true;

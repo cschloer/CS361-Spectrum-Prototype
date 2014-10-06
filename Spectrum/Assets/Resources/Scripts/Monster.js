@@ -11,6 +11,7 @@ public class Monster extends MonoBehaviour
 
 	public function init(c : Character) {
 		hero = c;
+		hurting = false;
 		health = 3;
 		hurtRecovery = .6;
 		var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
@@ -155,9 +156,39 @@ public class Monster extends MonoBehaviour
 
 			
 	}
+	
+
 	function Update(){
 		circlingBehaviour(2);
-		//moveTowardHero();
+		if(Random.value > .99){
+			simpleBullet();
+		}
+	}
+	
+	function attack(range : float, speed : float, width :float, depth : float, color : Color, fade : boolean, keyword : String){
+		var attackObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	
+		var attack : MonsterAttack = attackObject.AddComponent("MonsterAttack");						
+		attack.transform.localPosition = Vector3(0,0,0);						// Center the model on the parent.
+		attack.transform.position = model.transform.position;
+		attack.transform.rotation = model.transform.rotation;
+		attack.name = "Monster Attack";											// Name the object.
+		attack.renderer.material.mainTexture = Resources.Load("Textures/ball", Texture2D);	// Set the texture.  Must be in Resources folder.
+		attack.renderer.material.color = color;												// Set the color (easy way to tint things).
+		attack.renderer.material.shader = Shader.Find ("Transparent/Diffuse");						// Tell the renderer that our textures have transparency. 
+		attack.transform.localScale = Vector3(width,depth,1); 
+		attack.init(range, speed, fade);
+
+
+		attackObject.collider.enabled = false;
+		attackObject.AddComponent(BoxCollider);
+		attackObject.GetComponent(BoxCollider).name = "attack " + keyword;
+		attackObject.GetComponent(BoxCollider).isTrigger = true;
+		attackObject.GetComponent(BoxCollider).size = Vector3(.5,.5,10);
+		attackObject.AddComponent(Rigidbody);
+		attackObject.GetComponent(Rigidbody).isKinematic = false;
+		attackObject.GetComponent(Rigidbody).useGravity = false;
+		attackObject.GetComponent(Rigidbody).inertiaTensor = Vector3(1, 1, 1);
+		attackObject.GetComponent(Rigidbody).freezeRotation = true;
 	}
 	
 	//An example behaviour. Monster maintains constant distance and circles around hero, facing it.
@@ -171,6 +202,12 @@ public class Monster extends MonoBehaviour
 		}
 	}
 	
+	function simpleMelee(){
+		attack(1, 4, 1, .2, Color(1, 1, 1), true, "melee");
+	}
+	function simpleBullet(){
+		attack(5, 2.5, .3, .3, Color(1, 0, 1), false, "bullet");
+	}
 	
 	
 }
