@@ -51,12 +51,14 @@ function Update () {
 	}
 	if (jumping){
 		rjTimer += Time.deltaTime;
-		if (rjTimer >= 1) { // Amount of time for rolling
+		
+		if (rjTimer >= 1) { // Amount of time for jumping
 			jumping = false;
 			this.renderer.material.color = Color(1,1,1);	
 			Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = false;
 			//modelObject.GetComponent(BoxCollider).isTrigger = false;
-			gameObject.GetComponent(BoxCollider).isTrigger = false;
+			gameObject.GetComponent(BoxCollider).isTrigger = true;
+			
 		}
 	}
 	if (Input.GetKeyUp("w")){
@@ -131,7 +133,7 @@ function Update () {
 				jumping = true;
 				Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = true;
 				rjTimer = 0;
-				modelObject.GetComponent(BoxCollider).isTrigger = true;
+				modelObject.GetComponent(BoxCollider).isTrigger = false;
 			}
 		
 		}

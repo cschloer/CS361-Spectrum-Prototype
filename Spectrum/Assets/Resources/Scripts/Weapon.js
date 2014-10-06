@@ -10,7 +10,6 @@ public class Weapon extends MonoBehaviour{
 	public var recovering : boolean;
 	function init(c){
 		this.name = "Weapon";
-		swinging = false;
 		recovering = false;
 		owner = c;
 		owner.setWeapon(this);
@@ -36,24 +35,35 @@ public class Weapon extends MonoBehaviour{
 		var spriteRenderer = weaponObject.AddComponent("SpriteRenderer") as SpriteRenderer;
 		spriteRenderer.sprite = UnityEngine.Sprite.Create(Resources.Load("Textures/stick2", Texture2D), new Rect(40,0,60,100), new Vector2(0.5f, 0), 100f);
  		resetPosition();
+		stopSwinging();
 
  		}
  		
  	function distanceFromOwner(){
  		return Vector3.Magnitude(model.transform.position - owner.model.transform.position);
  	}
+ 	function startSwinging(){
+ 		swinging = true;
+ 		model.renderer.material.color = Color(1,1,1);
+
+ 	}
+ 	function stopSwinging(){
+ 		swinging = false;
+ 		model.renderer.material.color = Color(.8,.5,.5);
+ 	}
  	
  	function swing(angle : int, time : float, recovery : float){
- 		swinging = true;
+ 		startSwinging();
  		var t : float = 0;
  		while (t < time){
- 			t += Time.deltaTime;
+ 				t += Time.deltaTime;
  			//model.transform.eulerAngles = baseRotation + Vector3(0, 0, angle*(t/time));
- 			model.transform.RotateAround(model.transform.position, Vector3.forward, angle/time * Time.deltaTime);
+ 				model.transform.RotateAround(model.transform.position, Vector3.forward, angle/time * Time.deltaTime);
+ 			
  			yield;
  		}
  		
- 		swinging = false;
+ 		stopSwinging();
  		recovering = true;
  		while (t < time + recovery){
  			t += Time.deltaTime;
@@ -64,12 +74,36 @@ public class Weapon extends MonoBehaviour{
  		model.transform.localPosition = basePosition;
  		recovering = false;
  	}
- 	
- 	function toss(distance : float, time : float, spinSpeed : float, recovery : float){
+
+	function spin(time : float, recovery : float, overshoot : float){
+		startSwinging();
+ 		var t : float = 0;
+ 		while (t < time){
+ 				t += Time.deltaTime;
+ 			//model.transform.eulerAngles = baseRotation + Vector3(0, 0, angle*(t/time));
+ 				model.transform.RotateAround(model.transform.position, Vector3.forward, (360 + overshoot)/time * Time.deltaTime);
+ 			
+ 			yield;
+ 		}
+ 		stopSwinging();
+ 		recovering = true;
+ 		t=0;
+ 		
+ 		while (t < recovery){
+ 			t += Time.deltaTime;
+ 			model.transform.RotateAround(model.transform.position, Vector3.forward, -overshoot/recovery * Time.deltaTime);
+ 			yield;
+ 		}
+ 		model.transform.localEulerAngles = baseRotation;
+ 		model.transform.localPosition = basePosition;
+ 		recovering = false;
+ 	}
+	
+  	function toss(distance : float, time : float, spinSpeed : float, recovery : float){
  		model.transform.parent = null;
  		var heading : Vector3 = owner.model.transform.up;
  		Vector3.Normalize(heading);
- 		swinging = true;
+ 		startSwinging();
  		var t : float = 0;
  		while (t < time){
  			t += Time.deltaTime;
@@ -90,7 +124,7 @@ public class Weapon extends MonoBehaviour{
  		model.transform.localPosition = basePosition;
  		model.transform.position = owner.model.transform.position;
  		
- 		swinging = false;
+ 		stopSwinging();
  		recovering = true;
  		while (t < time + recovery){
  			t += Time.deltaTime;
@@ -102,10 +136,14 @@ public class Weapon extends MonoBehaviour{
  		
  	function Update(){
  		if(Input.GetKeyDown("left shift") && !swinging && !recovering && owner.model.yellow){
- 			swing(110, .3, 1);
+ 			if(owner.model.jumping){
+ 				spin(.5, 1.5, 110);
+ 			} else{
+ 				swing(110, .3, 1);
+ 			}
  		}
  		if(Input.GetKeyDown("left shift") && !swinging && !recovering && !owner.model.yellow){
- 			toss(4, 1.0, 500, 1);
+ 			toss(4, 1.0, 1000, 1);
  		}
  	}
  	
