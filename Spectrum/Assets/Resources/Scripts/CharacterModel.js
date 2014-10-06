@@ -23,6 +23,8 @@ var modelObject;
 
 var walkclip : AnimationClip;
 
+var colorStore : Color;
+
 
 // Use this for initialization
 function Start () {
@@ -31,6 +33,7 @@ function Start () {
 	red = false;
 	yellow = false;
 	rolling = false;
+	colorStore = Color(1,1,1);
 	
 }
 
@@ -43,7 +46,7 @@ function Update () {
 		this.transform.Translate(Vector3.up * Time.deltaTime*speed);
 		if (rjTimer >= 0.5) { // Amount of time for rolling
 			rolling = false;
-			this.renderer.material.color = Color(1,1,1);	
+			this.renderer.material.color = colorStore;	
 			Manager.gameObject.GetComponentInChildren(CameraMovement).rolling = false;
 			speed = 2;
 			Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 2;
@@ -55,7 +58,7 @@ function Update () {
 		
 		if (rjTimer >= 1) { // Amount of time for jumping
 			jumping = false;
-			this.renderer.material.color = Color(1,1,1);	
+			this.renderer.material.color = colorStore;	
 			Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = false;
 			//modelObject.GetComponent(BoxCollider).isTrigger = false;
 			gameObject.GetComponent(BoxCollider).isTrigger = true;
@@ -123,6 +126,7 @@ function Update () {
 		if (!jumping && !rolling) { 
 			if (!blue){ // roll because blue
 				// todo: roll animation
+				colorStore = this.renderer.material.color;
 				this.renderer.material.color = Color(.5,.5,.5);
 				speed = 10;
 				Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 10;
@@ -132,6 +136,7 @@ function Update () {
 			}
 			else { // jump because not blue
 				// todo: jump animation
+				colorStore = this.renderer.material.color;
 				this.renderer.material.color = Color(2,2,2);
 				jumping = true;
 				Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = true;
@@ -169,19 +174,27 @@ function OnCollisionExit(collisionInfo : Collision){
 }
 
 function changeBlue(){
-	if (blue) blue = false;
-	else blue = true;
+	if (blue){
+		blue = false;
+		this.renderer.material.color = colorChoice();
+	}
+	else{
+		blue = true;
+		this.renderer.material.color = colorChoice();
+	}
 	print("Blue: " + blue);
 
 }
 function changeRed(){
 	if (red){
 		red = false;
+		this.renderer.material.color = colorChoice();
 		this.transform.localScale = Vector3(1,1,1); 
 		modelObject.GetComponent(BoxCollider).size = Vector3(.25,.5,10);
 	}
 	else {
 		red = true;
+		this.renderer.material.color = colorChoice();
 		this.transform.localScale = Vector3(2,2,2); 
 		modelObject.GetComponent(BoxCollider).size = Vector3(.5,1,10);
 	}
@@ -189,9 +202,35 @@ function changeRed(){
 
 }
 function changeYellow(){
-	if (yellow) yellow = false;
-	else yellow = true;
+	if (yellow) {
+		yellow = false;
+		this.renderer.material.color = colorChoice();
+	}
+	else {
+	  yellow = true;
+	  this.renderer.material.color = colorChoice();
+	}
 	print("Yellow: " + yellow);
+}
+
+function colorChoice(){
+  if(red && yellow && blue){
+  	return Color(0,0,0);
+  } else if( red && yellow){
+  	return Color(1,.5,0);
+  } else if( red && blue){
+  	return Color(1,0,1);
+  } else if( yellow && blue){
+  	return Color(0,1,0);
+  } else if( yellow ){
+  	return Color(1,1,0);
+  } else if( blue ) {
+  	return Color(0,0,1);
+  } else if( red ){
+  	return Color(1,0,0);
+  } else {
+  	return Color(1,1,1);
+  }
 }
 
 /*function OnTriggerEnter(col:Collider){
