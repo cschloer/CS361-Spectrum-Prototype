@@ -1,5 +1,6 @@
 #pragma strict
 public class Weapon extends MonoBehaviour{
+	public var weaponObject : GameObject;
 	public var owner : Character;
 	public var model : WeaponModel;
 	public var baseRotation : Vector3;
@@ -8,12 +9,13 @@ public class Weapon extends MonoBehaviour{
 	public var swinging : boolean;
 	public var recovering : boolean;
 	function init(c){
+		this.name = "Weapon";
 		swinging = false;
 		recovering = false;
 		owner = c;
 		owner.setWeapon(this);
-		var weaponObject = new GameObject();
-		weaponObject.name = "Weapon";
+		weaponObject = new GameObject();
+		weaponObject.name = "WeaponObject";
 		//weaponObject.collider.enabled = false;
 		
 		baseRotation = Vector3(0, 0, -55);
@@ -22,10 +24,12 @@ public class Weapon extends MonoBehaviour{
 	 	weaponObject.GetComponent(BoxCollider).isTrigger = true;
 	 	weaponObject.GetComponent(BoxCollider).size = Vector3(.1,2,.5);
 	 	weaponObject.AddComponent(Rigidbody);
-	 	weaponObject.GetComponent(Rigidbody).isKinematic = true;
+	 	weaponObject.GetComponent(Rigidbody).isKinematic = false;
 	 	weaponObject.GetComponent(Rigidbody).useGravity = false;
 	 	weaponObject.GetComponent(Rigidbody).inertiaTensor = Vector3(1, 1, 1);
+	 	weaponObject.transform.parent = this.transform;
 		model = weaponObject.AddComponent("WeaponModel");
+		model.weapon = this;
 		model.transform.parent = owner.model.transform;								
 		model.transform.localPosition = basePosition;						
 		model.transform.localEulerAngles = baseRotation;						
@@ -61,4 +65,9 @@ public class Weapon extends MonoBehaviour{
  			swing(110, .3, 1);
  		}
  	}
+ 	
+ 	function OnTriggerEnter(col:Collider){
+		print("Weapon collided with " + col.gameObject.name);
+	}
+	
  }

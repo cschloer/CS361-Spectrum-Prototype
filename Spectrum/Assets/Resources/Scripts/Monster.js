@@ -1,15 +1,21 @@
 ﻿#pragma strict
 public class Monster extends MonoBehaviour 
 {
-	public var model : MonsterModel;
-	public var hero : Character;
+	public var model : MonsterModel; //The model for this monster
+	public var hero : Character; //Pointer to the hero
 	public var moveSpeed : float;  //Tiles per second
 	public var turnSpeed : float;  //Degrees Per second
+	public var health : int; //Max/starting health
+	public var hurtRecovery : float; //Time spend invincible after hit
+	public var hurting : boolean; //Marker boolean for whether it was just hurt
 
 	public function init(c : Character) {
 		hero = c;
+		health = 3;
+		hurtRecovery = .6;
 		var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
 		model = modelObject.AddComponent("MonsterModel");						// Add a gemModel script to control visuals of the gem.
+		model.monster = this;
 		//gemType = 1;
 		moveSpeed = 1;
 		turnSpeed = 90;
@@ -32,35 +38,62 @@ public class Monster extends MonoBehaviour
  		modelObject.GetComponent(Rigidbody).freezeRotation = true;
 	}
 	
+	//Move forward at default speed
 	public function move(){
 		move(1);
 	}
-	
+	//Move forward at given speed factor
 	public function move(multiplier : float){
 		transform.position += model.transform.up * Time.deltaTime*moveSpeed*multiplier;
 	}
+	
+	//Move backward at default speed
 	public function moveBack(){
 		moveBack(1);
 	}
-	
+	//Move backward at given speed factor
 	public function moveBack(multiplier : float){
 		transform.position += -1*model.transform.up * Time.deltaTime*moveSpeed*multiplier;
 	}
+	
+	//Strafe left
 	public function moveLeft(){
 		moveLeft(1);
 	}
-	
+	//Strafe left at given speed
 	public function moveLeft(multiplier : float){
 		transform.position += -1*model.transform.right * Time.deltaTime*moveSpeed*multiplier;
 	}
-	
+	//Strafe right
 	public function moveRight(){
 		moveRight(1);
 	}
-	
+	//Strafe right at given speed
 	public function moveRight(multiplier : float){
 		transform.position += 1*model.transform.right * Time.deltaTime*moveSpeed*multiplier;
 	}
+	//Strafe toward hero at given speed
+	public function moveTowardHero(m : float){
+		var toHero : Vector3 = hero.model.transform.position - model.transform.position;
+		transform.position += toHero.normalized * Time.deltaTime*moveSpeed * m;
+	}
+	//Strafe toward hero at default speed
+	public function moveTowardHero(){
+		moveTowardHero(1);
+	}
+	
+	//Strafe away from hero at given speed
+	public function moveFromHero(m : float){
+		var toHero : Vector3 = hero.model.transform.position - model.transform.position;
+		transform.position += toHero.normalized * Time.deltaTime*moveSpeed * m * -1;
+	}
+	
+	//Strafe away from hero at default speed
+	public function moveFromHero(){
+		moveFromHero(1);
+	}
+	
+	//Rotate right (clockwise) at given speed
 	public function turnRight(m : float){
 		model.transform.eulerAngles += Vector3(0, 0, Time.deltaTime * turnSpeed * m * -1);
 	}
@@ -68,18 +101,19 @@ public class Monster extends MonoBehaviour
 		turnRight(1);
 	}
 	
+	//Rotate left (counterclockwise) at given speed
 	public function turnLeft(m : float){
 		model.transform.eulerAngles += Vector3(0, 0, Time.deltaTime * turnSpeed * m * 1);
 	}
 	public function turnLeft(){
 		turnLeft(1);
 	}
-	
+	//Calculates distance from (center of) monster to hero
 	public function distanceToHero(){
 		return Vector3.Magnitude(model.transform.position - hero.model.transform.position);
 	}
 
-		
+	//Rotates toward hero at given speed
 	public function turnToHero(multiplier : float){
 		var vectorToHero : Vector3 = model.transform.position - hero.model.transform.position;
 		var anglesToHero : float = Mathf.Atan2(vectorToHero.y, vectorToHero.x) * Mathf.Rad2Deg - 90;
@@ -94,10 +128,39 @@ public class Monster extends MonoBehaviour
 		turnToHero(1);
 	}
 	
-	function Update(){
-		circlingBehaviour(2);
+	//Subroutine - call once, runs concurrently.
+	public function flee(speed : float, duration : float){
+		var t : float = 0;
+		while(t < duration){
+			t += Time.deltaTime;
+			moveFromHero(speed);
+			yield;
+		}
 	}
 	
+	//Subroutine - call once, runs concurrently.
+	public function hurt(){
+		flee(1, hurtRecovery); //Might want to be taken out and added only for specific monsters (by overriding hurt)
+		health--;
+		hurting = true;
+		model.renderer.material.color = Color(2,2,2);
+
+		var t : float = hurtRecovery;
+		while (t > 0){
+			t -= Time.deltaTime;
+			yield;
+		}
+		hurting = false;
+		model.renderer.material.color = Color(1,1,1);
+
+			
+	}
+	function Update(){
+		circlingBehaviour(2);
+		//moveTowardHero();
+	}
+	
+	//An example behaviour. Monster maintains constant distance and circles around hero, facing it.
 	public function circlingBehaviour(distance : float){
 		moveRight();
 		turnToHero();
@@ -107,5 +170,7 @@ public class Monster extends MonoBehaviour
 			moveBack();
 		}
 	}
+	
+	
 	
 }
