@@ -109,9 +109,7 @@ public class Weapon extends MonoBehaviour{
  		}
  	}
  	
- 	function OnTriggerEnter(col:Collider){
-		print("Weapon collided with " + col.gameObject.name);
-	}
+ 	
 	
 	function resetPosition(){
 		while (true){
@@ -121,6 +119,8 @@ public class Weapon extends MonoBehaviour{
 			//print("Test");
 		}
 	}
+	
+	
 	
 	
  }
