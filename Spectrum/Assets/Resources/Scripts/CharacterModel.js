@@ -24,8 +24,11 @@ var modelObject;
 var walkclip : AnimationClip;
 
 var colorStore : Color;
-
-
+var heading : Vector3;
+var rollTime : float; 
+var rollSpeed : float;
+var rollCooldown : float;
+var jumpCooldown : float;
 // Use this for initialization
 function Start () {
 	speed = 2;
@@ -34,34 +37,37 @@ function Start () {
 	yellow = false;
 	rolling = false;
 	colorStore = Color(1,1,1);
+	heading = Vector3.zero;
+	rollTime = .5;
+	rollSpeed = 8;
+	rollCooldown = 1.5;
+	jumpCooldown = 1;
 	
 }
 
 // Update is called once per frame
 function Update () {
 	transform.position.z = 0;
-
+	rjTimer += Time.deltaTime;
 	if (rolling){
-		rjTimer += Time.deltaTime;
-		this.transform.Translate(Vector3.up * Time.deltaTime*speed);
-		if (rjTimer >= 0.5) { // Amount of time for rolling
+		this.transform.Translate(heading * Time.deltaTime*speed);
+		if (rjTimer >= rollTime) { // Amount of time for rolling
 			rolling = false;
 			this.renderer.material.color = colorStore;	
 			Manager.gameObject.GetComponentInChildren(CameraMovement).rolling = false;
 			speed = 2;
 			Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 2;
+			rjTimer = 0;
 		}
-	
-	}
-	if (jumping){
-		rjTimer += Time.deltaTime;
-		
+	 }
+	if (jumping){		
 		if (rjTimer >= 1) { // Amount of time for jumping
 			jumping = false;
 			this.renderer.material.color = colorStore;	
 			Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = false;
 			//modelObject.GetComponent(BoxCollider).isTrigger = false;
 			gameObject.GetComponent(BoxCollider).isTrigger = true;
+			rjTimer = 0;
 			
 		}
 	}
@@ -124,17 +130,17 @@ function Update () {
 	}
 	if (Input.GetKeyDown("space")) {
 		if (!jumping && !rolling) { 
-			if (!blue){ // roll because blue
+			if (!blue && rjTimer >= rollCooldown){ // roll because blue
 				// todo: roll animation
 				colorStore = this.renderer.material.color;
 				this.renderer.material.color = Color(.5,.5,.5);
-				speed = 10;
-				Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 10;
+				speed = rollSpeed;
+				Manager.gameObject.GetComponentInChildren(CameraMovement).speed = rollSpeed;
 				rolling = true;
 				Manager.gameObject.GetComponentInChildren(CameraMovement).rolling = true;
 				rjTimer = 0;
 			}
-			else { // jump because not blue
+			else if (blue && rjTimer >= jumpCooldown){ // jump because not blue
 				// todo: jump animation
 				colorStore = this.renderer.material.color;
 				this.renderer.material.color = Color(2,2,2);
@@ -146,23 +152,19 @@ function Update () {
 		
 		}
 	}
-	
-	
-	
-	
-	
-	if (!rolling){
-	
-		if (rotateR) {
-			this.transform.Rotate(Vector3(0,0,Time.deltaTime*160*(speed)));
 			
-		}
+	if (!rolling){
+		
+		if (rotateR) this.transform.Rotate(Vector3(0,0,Time.deltaTime*160*(speed)));
 		if (rotateL) this.transform.Rotate(Vector3(0,0,-Time.deltaTime*160*(speed)));
 		
-		if (moveN) this.transform.Translate(Vector3.up * Time.deltaTime*speed);
-		if (moveE) this.transform.Translate(Vector3.right * Time.deltaTime*speed);
-		if (moveS) this.transform.Translate(Vector3.down * Time.deltaTime*speed);
-		if (moveW) this.transform.Translate(Vector3.left * Time.deltaTime*speed);
+		heading = Vector3.zero;
+		if (moveN) heading += Vector3.up;
+		if (moveE) heading += Vector3.right;
+		if (moveS) heading += Vector3.down;
+		if (moveW) heading += Vector3.left;
+		heading.Normalize();
+		this.transform.Translate(heading * Time.deltaTime * speed);
 	
 	}	
 	Manager.gameObject.GetComponentInChildren(CameraMovement).gameObject.transform.position = Vector3(this.transform.position.x, this.transform.position.y, -10)+3*this.transform.up;

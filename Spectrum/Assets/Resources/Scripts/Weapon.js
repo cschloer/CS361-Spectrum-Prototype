@@ -45,6 +45,7 @@ public class Weapon extends MonoBehaviour{
  	function startSwinging(){
  		swinging = true;
  		model.renderer.material.color = Color(1,1,1);
+ 		owner.model.rjTimer = owner.model.rollTime;
 
  	}
  	function stopSwinging(){
@@ -132,7 +133,7 @@ public class Weapon extends MonoBehaviour{
 		model.transform.localEulerAngles = baseRotation;
  		model.transform.localPosition = basePosition;
  		model.transform.position = owner.model.transform.position;
- 		model.transform.localScale = owner.model.transform.localScale;
+ 		model.transform.localScale = Vector3.one;
  		stopSwinging();
  		startRecovery();
  		t=0;

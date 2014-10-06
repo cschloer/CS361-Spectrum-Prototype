@@ -143,7 +143,7 @@ public class Monster extends MonoBehaviour
 	//Subroutine - call once, runs concurrently.
 	public function flee(speed : float, duration : float){
 		var t : float = 0;
-		while(t < duration){
+		while(t < duration && health > 0){
 			t += Time.deltaTime;
 			moveFromHero(speed);
 			yield;
@@ -158,7 +158,7 @@ public class Monster extends MonoBehaviour
 		model.renderer.material.color = Color(.5,.5,.5);
 
 		var t : float = hurtRecovery;
-		while (t > 0){
+		while (t > 0 && health > 0){
 			t -= Time.deltaTime;
 			yield;
 		}
