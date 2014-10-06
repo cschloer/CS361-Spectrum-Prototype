@@ -46,6 +46,7 @@ public class Monster extends MonoBehaviour
 	//Move forward at given speed factor
 	public function move(multiplier : float){
 		model.transform.position += model.transform.up * Time.deltaTime*moveSpeed*multiplier;
+		
 	}
 	
 	//Move backward at default speed
@@ -159,6 +160,7 @@ public class Monster extends MonoBehaviour
 	
 
 	function Update(){
+		model.transform.position.z = 0;
 		circlingBehaviour(2);
 		if(Random.value > .99){
 			simpleBullet();
