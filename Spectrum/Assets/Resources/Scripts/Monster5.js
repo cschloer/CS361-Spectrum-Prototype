@@ -29,12 +29,12 @@ public class Monster5 extends Monster {
 				vip1Sound.Play();
 				isVisible = false;
 				blinkCounter++;
-				model.renderer.material.color.a = 0;
+				if (model!= null) model.renderer.material.color.a = 0;
 			}else{
 				vip2Sound.Play();
 				isVisible = true;
 				blinkCounter++;
-				model.renderer.material.color.a = 1;
+				if (model!= null) model.renderer.material.color.a = 1;
 			}
 	 } 
 	}
