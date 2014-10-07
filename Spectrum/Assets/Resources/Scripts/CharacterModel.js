@@ -106,25 +106,25 @@ function Update () {
 		Manager.gameObject.GetComponentInChildren(CameraMovement).moveE = true;
 	}	
 	
-	if (Input.GetKeyUp("e")){
+	if (Input.GetKeyUp("right")){
 		if (!rotateR){
 			rotateL = false;
 			Manager.gameObject.GetComponentInChildren(CameraMovement).rotateL = false;
 		}
 	}
-	if (Input.GetKeyDown("e")) {
+	if (Input.GetKeyDown("right")) {
 		if (!rotateR){
 			rotateL = true;
 			Manager.gameObject.GetComponentInChildren(CameraMovement).rotateL = true;
 		}
 	}		
-	if (Input.GetKeyUp("q")) {
+	if (Input.GetKeyUp("left")) {
 		if(!rotateL){
 			rotateR = false;
 			Manager.gameObject.GetComponentInChildren(CameraMovement).rotateR = false;
 		}
 	}
-	if (Input.GetKeyDown("q")) {
+	if (Input.GetKeyDown("left")) {
 		if(!rotateL){
 			rotateR = true;
 			Manager.gameObject.GetComponentInChildren(CameraMovement).rotateR = true;

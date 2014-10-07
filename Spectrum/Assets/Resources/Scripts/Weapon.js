@@ -152,7 +152,7 @@ public class Weapon extends MonoBehaviour{
  	}
  		
  	function Update(){
- 		if(Input.GetKeyDown("left shift") && !swinging && !recovering && owner.model.yellow){
+ 		if(Input.GetKeyDown("up") && !swinging && !recovering && owner.model.yellow){
  			if(owner.model.jumping){
  				if(!owner.model.red){
  					spin(.5, 1.5, 110);
@@ -167,7 +167,7 @@ public class Weapon extends MonoBehaviour{
  				}
  			}
  		}
- 		if(Input.GetKeyDown("left shift") && !swinging && !recovering && !owner.model.yellow){
+ 		if(Input.GetKeyDown("up") && !swinging && !recovering && !owner.model.yellow){
  			toss(4, 1.0, 1000, 1);
  		}
  	}
