@@ -52,6 +52,7 @@ function Start () {
 	
 	rollSound = gameObject.AddComponent("AudioSource") as AudioSource;
 	rollSound.clip = Resources.Load("Sounds/tumble");
+	rollSound.volume = .5;
 	jumpSound = gameObject.AddComponent("AudioSource") as AudioSource;
 	jumpSound.clip = Resources.Load("Sounds/boing");
 	landSound = gameObject.AddComponent("AudioSource") as AudioSource;
