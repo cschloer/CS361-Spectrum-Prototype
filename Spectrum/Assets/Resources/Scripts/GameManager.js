@@ -100,9 +100,9 @@ function spawnMonster() {
 		addMonster(rX,rY,character,rType);
 		monsterCounter++;
 		if (clockFrequency > 1){
-			clockFrequency--;
+			clockFrequency *= .95;
 		}
-		print("spawned monster" + clockFrequency);
+		print("spawned monster " + rType + ", " + clockFrequency);
 	}
 }
 
