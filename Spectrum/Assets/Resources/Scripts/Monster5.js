@@ -1,6 +1,45 @@
 
-// invisible/blink with normal projectiles
+// invisible/blink with normal projectile
+var isVisible : boolean;
+var clock : float;
+var blinkCounter : int;
 
 public class Monster5 extends Monster {
+	
+	function init(c : Character) {
+		print("Monster 5");
+		super.init(c);
+		isVisible = true;
+		clock = 0.0;
+		blinkCounter = 0;
+		health = 2;
+	}
+	
+	function hurt() {
+		if (isVisible) {
+			super.hurt();
+		} 
+	}
+	
+	function blink() {
+		if (clock%3 <.1 && clock/3 > blinkCounter ) {
+			print("Monster Blinkz");
+			if (isVisible) {
+				isVisible = false;
+				blinkCounter++;
+				model.renderer.material.color.a = 0;
+			}else{
+				isVisible = true;
+				blinkCounter++;
+				model.renderer.material.color.a = 1;
+			}
+	 } 
+	}
+	
+	function Update() {
+		super.Update();
+		clock = clock + Time.deltaTime;
+		blink();
+	}
 
 }

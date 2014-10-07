@@ -8,6 +8,8 @@ var tiles : Array;					// This array holds tiles.
 var colorFolder : GameObject;
 var camera:GameObject;
 
+var clock: float;
+var monsterCounter : int;
 // Called once when the script is created.
 function Start () {
 	characterFolder = new GameObject();  
@@ -25,14 +27,13 @@ function Start () {
 	addCharacter(0,0);
 	addCircle(0); // blue circle
 	addCircle(1); // red circle
-	addCircle(2); // yellow circle
-
-	addMonster3(4, 3, character);
-
-	
+	addCircle(2); // yellow circle	
 	addWeapon(character);
 	
 	protolevelInit();
+	
+	clock = 0.0;
+	monsterCounter = 0;
 
 
 	
@@ -40,6 +41,8 @@ function Start () {
 
 // Called every frame.
 function Update () {
+	clock = clock + Time.deltaTime;
+	spawnMonster();
 }
 
 
@@ -55,8 +58,6 @@ function addCharacter(x : float , y : float) {
 	
 	character = characterScript;											// Add the character to the characters array for future access.
 	characterScript.name = "CharacterScript";								// Give the character object a name in the Hierarchy pane.				
-
-	
 }
 
 
@@ -79,6 +80,19 @@ function addCircle(color:int){
 	colorScript.init(color, character.model);							// Initialize the color script.
 	
 
+}
+
+function spawnMonster() {
+	if (clock%10 <.1 && clock/10 > monsterCounter){
+		var rX : float;
+		var rY : float;
+		var rType: int;
+		rX = Random.Range(-10.0,10.0);
+		rY = Random.Range(-10.0,10.0);
+		rType = Random.Range(1,6);
+		addMonster(rX,rY,character,rType);
+		monsterCounter++;
+	}
 }
 
 
