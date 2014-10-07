@@ -7,7 +7,7 @@ var blinkCounter : int;
 public class Monster5 extends Monster {
 	
 	function init(c : Character) {
-		print("Monster 5");
+		//print("Monster 5");
 		super.init(c);
 		isVisible = true;
 		clock = 0.0;
