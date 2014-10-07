@@ -28,6 +28,7 @@ function Start () {
 	addCircle(0); // blue circle
 	addCircle(1); // red circle
 	addCircle(2); // yellow circle	
+
 	addWeapon(character);
 	
 	protolevelInit();
@@ -79,7 +80,6 @@ function addCircle(color:int){
 	colorScript.transform.parent = colorFolder.transform;	// Set the color's parent object to be the color folder.							
 	colorScript.init(color, character.model);							// Initialize the color script.
 	
-
 }
 
 function spawnMonster() {
@@ -114,6 +114,9 @@ function addMonster(x : float, y :float, c : Character, type: int){
 			break;
 		case 5:
 			monsterScript = monsterObject.AddComponent("Monster5");
+			break;
+		case 6:
+			monsterScript = monsterObject.AddComponent("Monster6");		// Add the monster2.js script to the object.
 			break;
 		default:
 			monsterScript = monsterObject.AddComponent("Monster");		// Add the monster.js script to the object.
