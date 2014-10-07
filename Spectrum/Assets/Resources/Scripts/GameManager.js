@@ -41,8 +41,9 @@ function Start () {
 	clockFrequency = 15;
 	musicSound = gameObject.AddComponent("AudioSource") as AudioSource;
 	musicSound.clip = Resources.Load("Sounds/music");
-	musicSound.volume = .4;
+	musicSound.volume = .6;
 	musicSound.loop = true;
+	musicSound.Play();
 	
 }
 
@@ -99,9 +100,9 @@ function spawnMonster() {
 		addMonster(rX,rY,character,rType);
 		monsterCounter++;
 		if (clockFrequency > 1){
-			clockFrequency--;
+			clockFrequency *= .95;
 		}
-		print("spawned monster" + clockFrequency);
+		print("spawned monster " + rType + ", " + clockFrequency);
 	}
 }
 

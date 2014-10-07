@@ -177,7 +177,7 @@ public class Weapon extends MonoBehaviour{
  			}
  		}
  		if(Input.GetKeyDown("up") && !swinging && !recovering && !owner.model.yellow){
- 			toss(4, 1.0, 1000, 1);
+ 			toss(4, .8, 1000, 1);
  		}
  	}
  	
