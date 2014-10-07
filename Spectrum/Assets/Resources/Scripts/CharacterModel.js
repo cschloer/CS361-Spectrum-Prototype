@@ -15,6 +15,7 @@ var yellow:boolean;
 
 var rolling:boolean;
 var jumping:boolean;
+var vincible:boolean;	// New: makes the player vincible/invincible for certain jumps/rolls.
 
 var rjTimer:float;
 
@@ -36,6 +37,7 @@ function Start () {
 	red = false;
 	yellow = false;
 	rolling = false;
+	vincible = true;
 	colorStore = Color(1,1,1);
 	heading = Vector3.zero;
 	rollTime = .5;
@@ -66,9 +68,9 @@ function Update () {
 			this.renderer.material.color = colorStore;	
 			Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = false;
 			//modelObject.GetComponent(BoxCollider).isTrigger = false;
-			gameObject.GetComponent(BoxCollider).isTrigger = true;
+			//gameObject.GetComponent(BoxCollider).isTrigger = true;
+			vincible = true;															// Makes player vincible again.
 			rjTimer = 0;
-			
 		}
 	}
 	if (Input.GetKeyUp("w")){
@@ -147,7 +149,9 @@ function Update () {
 				jumping = true;
 				Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = true;
 				rjTimer = 0;
-				modelObject.GetComponent(BoxCollider).isTrigger = false;
+				//modelObject.GetComponent(BoxCollider).isTrigger = false;
+				vincible = false;														// Player invincible without passing through walls.
+				
 			}
 		
 		}
@@ -281,7 +285,7 @@ function stopMovement(){
 }
 
 function OnTriggerEnter(col:Collider){
-	if(col.gameObject.name.Contains("attack") && !character.hurting){
+	if(col.gameObject.name.Contains("attack") && !character.hurting && vincible){
 		character.hurt();
 	}
 }
