@@ -6,7 +6,9 @@ var health : int;
 var modelObject : GameObject;
 var oofSound : AudioSource;
 var killedMonsters : int;
+var manager:GameManager;
 function init(m) {
+	manager = m;
 	health = 3;
 	hurtRecovery = .5;
 	enabled = false;
@@ -72,6 +74,7 @@ function checkHealth(){
 		model.renderer.material.color.a = 1-(t/2);
 		yield;
 	}
-	Application.LoadLevel("Spectrum");
+	//Application.LoadLevel("Spectrum");
+	manager.lose();
 }
 

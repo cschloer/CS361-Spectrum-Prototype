@@ -5,12 +5,17 @@ var character : Character;			// This is the hero character.
 var monsters : Array;				// This array holds monsters.
 var tiles : Array;					// This array holds tiles.
 
+
 var colorFolder : GameObject;
 var camera:GameObject;
 
 var clock: float;
 var monsterCounter : int;
 var clockFrequency : int;
+
+var losewinTimer:float;
+var loseScreen:boolean;
+var winScreen:boolean;
 
 var musicSound : AudioSource;
 // Called once when the script is created.
@@ -44,11 +49,22 @@ function Start () {
 	musicSound.volume = .6;
 	musicSound.loop = true;
 	musicSound.Play();
-	
+	winScreen = false;
+	loseScreen = false;
 }
 
 // Called every frame.
 function Update () {
+	if (winScreen || loseScreen){
+		losewinTimer += Time.deltaTime;
+		if (losewinTimer >= 2) {
+			winScreen = false;
+			loseScreen = false;
+			Application.LoadLevel("Spectrum");
+
+		}
+		return;
+	}
 	clock = clock + Time.deltaTime;
 	spawnMonster();
 }
@@ -177,6 +193,35 @@ function protolevelInit(){
   }
 }
 
+
+function lose(){
+	loseScreen = true;
+	losewinTimer = 0;
+
+}
+
+function win(){
+	winScreen = true;
+	losewinTimer = 0;
+
+}
+
 function OnGUI() {
-	GUI.Label(Rect(0,0,Screen.width,Screen.height),"Health: " + character.health + "\nKilled Monsters: " + character.killedMonsters );
+	GUI.backgroundColor = Color.white;
+	GUI.skin.label.fontSize = 14;
+	if (loseScreen){
+		GUI.backgroundColor = Color.black;
+		GUI.color = Color.white;
+		GUI.skin.box.fontSize = 26;
+		GUI.Box(Rect(0,0,Screen.width,Screen.height), "\n\n\n\n\n\n You lose!");
+	}
+	else if (winScreen){
+		GUI.backgroundColor = Color.black;
+		GUI.color = Color.white;
+		GUI.skin.box.fontSize = 26;
+		GUI.Box(Rect(0,0,Screen.width,Screen.height), "\n\n\n\n\n\n You win!");
+	}
+	else {
+		GUI.Label(Rect(0,0,Screen.width,Screen.height),"Health: " + character.health + "\nKilled Monsters: " + character.killedMonsters );
+	}
 }
