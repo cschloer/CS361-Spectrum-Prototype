@@ -26,7 +26,8 @@ function Start () {
 	addCircle(0); // blue circle
 	addCircle(1); // red circle
 	addCircle(2); // yellow circle
-	addMonster(4, 3, character);
+	addMonster(4, 3, character, 2);		// add Monster2
+	addMonster(-4, 3, character, 0);	// add TestMonster
 	
 	addWeapon(character);
 	
@@ -80,9 +81,28 @@ function addCircle(color:int){
 }
 
 
-function addMonster(x : float, y :float, c : Character){
+function addMonster(x : float, y :float, c : Character, type: int){
 	var monsterObject = new GameObject();					// Create a new empty game object that will hold a character.
-	var monsterScript = monsterObject.AddComponent("Monster");		// Add the character.js script to the object.
+	var monsterScript;
+	switch(type){
+		case 1:
+			//todo: monster1
+			break;
+		case 2:
+			monsterScript = monsterObject.AddComponent("Monster2");		// Add the monster2.js script to the object.
+			break;
+		case 3:
+			//todo: monster1
+			break;
+		case 4:
+			//todo: monster1
+			break;
+		case 5:
+			//todo: monster1
+			break;
+		default:
+			monsterScript = monsterObject.AddComponent("Monster");		// Add the monster.js script to the object.
+	}
 	
 	monsterScript.transform.parent = monsterFolder.transform;
 	monsterScript.transform.position = Vector3(x,y,0);		// Position the character at x,y.								
