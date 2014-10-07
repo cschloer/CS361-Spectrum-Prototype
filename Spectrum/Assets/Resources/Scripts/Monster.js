@@ -22,7 +22,7 @@ public class Monster extends MonoBehaviour
 		moveSpeed = 1;
 		turnSpeed = 90;
 			
-		model.transform.parent = transform;									// Set the model's parent to the gem (this object).
+		model.transform.parent = modelObject.transform;									// Set the model's parent to the gem (this object).
 		model.transform.localPosition = Vector3(0,0,0);						// Center the model on the parent.
 		model.name = "Character Model";											// Name the object.
 		model.renderer.material.mainTexture = Resources.Load("Textures/gem1", Texture2D);	// Set the texture.  Must be in Resources folder.
@@ -194,9 +194,11 @@ public class Monster extends MonoBehaviour
 		}
 	}
 	//A generic attack. 
+	//Range is distance attack travels before disappearing.
+	//Speed is the movement speed of the attack.
+	//If home is more than zero the projectile homes toward the hero (the higher the number the more accurate the homing).
 	//Width and depth are bullet dimensions. 
 	//If fade is true, attack becomes translucent as it moves.
-	//If home is more than zero the projectile homes toward the hero (the higher the number the more accurate the homing).
 	//If destructible is true, the sword can destroy the bullets.
 	//Keywords can be used for specific hit behaviours (stun, slow, knockback, etc) to be implemented in CharacterModel's (or WeaponModel's) OnTriggerEnter.
 	function attack(range : float, speed : float, home : float, width :float, depth : float, color : Color, destructible : boolean, fade : boolean, keyword : String){
