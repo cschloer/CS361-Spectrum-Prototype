@@ -22,9 +22,9 @@ public class Monster extends MonoBehaviour
 		moveSpeed = 1;
 		turnSpeed = 90;
 			
-		model.transform.parent = modelObject.transform;									// Set the model's parent to the gem (this object).
+		model.transform.parent = transform;									// Set the model's parent to the gem (this object).
 		model.transform.localPosition = Vector3(0,0,0);						// Center the model on the parent.
-		model.name = "Character Model";											// Name the object.
+		model.name = "Monster Model";										// Name the object.
 		model.renderer.material.mainTexture = Resources.Load("Textures/gem1", Texture2D);	// Set the texture.  Must be in Resources folder.
 		model.renderer.material.color = Color(1,1,1);												// Set the color (easy way to tint things).
 		model.renderer.material.shader = Shader.Find ("Transparent/Diffuse");						// Tell the renderer that our textures have transparency. 
@@ -32,7 +32,7 @@ public class Monster extends MonoBehaviour
 		modelObject.collider.enabled = false;
  		modelObject.AddComponent(BoxCollider);
 		modelObject.GetComponent(BoxCollider).isTrigger = false;
- 		modelObject.GetComponent(BoxCollider).size = Vector3(.5,.5,.5);
+ 		modelObject.GetComponent(BoxCollider).size = Vector3(.5,.5,10);
  		modelObject.AddComponent(Rigidbody);
 		modelObject.GetComponent(Rigidbody).isKinematic = false;
  		modelObject.GetComponent(Rigidbody).useGravity = false;
