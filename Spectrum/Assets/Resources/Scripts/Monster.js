@@ -178,6 +178,7 @@ public class Monster extends MonoBehaviour
 		}		
 	}
 	function die(deathTime : float){
+		hero.killedMonsters++;
 		var t : float = 0;
 		while (t < deathTime){
 			t += Time.deltaTime;
