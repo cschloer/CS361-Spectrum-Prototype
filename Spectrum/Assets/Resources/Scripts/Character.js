@@ -4,11 +4,8 @@ var hurtRecovery : float;
 var hurting : boolean;
 var health : int;
 var modelObject : GameObject;
-<<<<<<< HEAD
 var oofSound : AudioSource;
-=======
 var killedMonsters : int;
->>>>>>> FETCH_HEAD
 function init(m) {
 	health = 3;
 	hurtRecovery = .5;
