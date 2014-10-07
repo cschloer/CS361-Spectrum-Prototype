@@ -23,7 +23,6 @@ public class Monster5 extends Monster {
 	
 	function blink() {
 		if (clock%3 <.1 && clock/3 > blinkCounter ) {
-			print("Monster Blinkz");
 			if (isVisible) {
 				vip1Sound.Play();
 				isVisible = false;
