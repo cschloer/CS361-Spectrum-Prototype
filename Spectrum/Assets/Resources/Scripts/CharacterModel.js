@@ -119,7 +119,16 @@ function Update () {
 		moveE = true;
 		Manager.gameObject.GetComponentInChildren(CameraMovement).moveE = true;
 	}	
-	
+	/*rotateL = false;
+	rotateR = false;
+	if (Input.GetAxis("Mouse X")>0){
+    		rotateL = true;
+			Manager.gameObject.GetComponentInChildren(CameraMovement).rotateL = true;
+	}
+	if (Input.GetAxis("Mouse X")<0){
+    		rotateR = true;
+			Manager.gameObject.GetComponentInChildren(CameraMovement).rotateR = true;
+	}*/
 	if (Input.GetKeyUp("right")){
 		if (!rotateR){
 			rotateL = false;
