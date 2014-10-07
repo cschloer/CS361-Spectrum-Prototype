@@ -28,7 +28,7 @@ public class Monster2 extends Monster {
 		model.transform.localScale = Vector3(1.5,1.5,1.5);					// Make him a big'un.
 		model.transform.localPosition = Vector3(0,0,0);						// Center the model on the parent.
 		model.name = "Monster Model";										// Name the object.
-		model.renderer.material.mainTexture = Resources.Load("Textures/gem2", Texture2D);	// Set the texture.  Must be in Resources folder.
+		model.renderer.material.mainTexture = Resources.Load("Textures/Monster2", Texture2D);	// Set the texture.  Must be in Resources folder.
 		model.renderer.material.color = Color(1,1,1);												// Set the color (easy way to tint things).
 		model.renderer.material.shader = Shader.Find ("Transparent/Diffuse");						// Tell the renderer that our textures have transparency. 
 	
