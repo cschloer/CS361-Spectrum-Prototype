@@ -27,7 +27,7 @@ function Start () {
 	addCircle(1); // red circle
 	addCircle(2); // yellow circle
 
-	addMonster3(4, 3, character);
+	addMonster(4, 3, character, 6);
 
 	
 	addWeapon(character);
@@ -78,7 +78,6 @@ function addCircle(color:int){
 	colorScript.transform.parent = colorFolder.transform;	// Set the color's parent object to be the color folder.							
 	colorScript.init(color, character.model);							// Initialize the color script.
 	
-
 }
 
 
@@ -100,6 +99,9 @@ function addMonster(x : float, y :float, c : Character, type: int){
 			break;
 		case 5:
 			//todo: monster1
+			break;
+		case 6:
+			monsterScript = monsterObject.AddComponent("Monster6");		// Add the monster2.js script to the object.
 			break;
 		default:
 			monsterScript = monsterObject.AddComponent("Monster");		// Add the monster.js script to the object.
