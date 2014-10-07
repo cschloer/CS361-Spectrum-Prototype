@@ -86,19 +86,19 @@ function addMonster(x : float, y :float, c : Character, type: int){
 	var monsterScript;
 	switch(type){
 		case 1:
-			//todo: monster1
+			monsterScript = monsterObject.AddComponent("Monster1");
 			break;
 		case 2:
 			monsterScript = monsterObject.AddComponent("Monster2");		// Add the monster2.js script to the object.
 			break;
 		case 3:
-			//todo: monster1
+			monsterScript = monsterObject.AddComponent("Monster3");
 			break;
 		case 4:
-			//todo: monster1
+			monsterScript = monsterObject.AddComponent("Monster4");
 			break;
 		case 5:
-			//todo: monster1
+			monsterScript = monsterObject.AddComponent("Monster5");
 			break;
 		case 6:
 			monsterScript = monsterObject.AddComponent("Monster6");		// Add the monster2.js script to the object.
@@ -106,30 +106,6 @@ function addMonster(x : float, y :float, c : Character, type: int){
 		default:
 			monsterScript = monsterObject.AddComponent("Monster");		// Add the monster.js script to the object.
 	}
-	
-	monsterScript.transform.parent = monsterFolder.transform;
-	monsterScript.transform.position = Vector3(x,y,0);		// Position the character at x,y.								
-	
-	monsterScript.init(c);
-	monsters.Add(monsterScript);
-	monsterScript.name = "Monster"+ monsters.length;
-}
-
-function addMonster1(x : float, y :float, c : Character){
-	var monsterObject = new GameObject();					// Create a new empty game object that will hold a character.
-	var monsterScript = monsterObject.AddComponent("Monster1");		// Add the character.js script to the object.
-	
-	monsterScript.transform.parent = monsterFolder.transform;
-	monsterScript.transform.position = Vector3(x,y,0);		// Position the character at x,y.								
-	
-	monsterScript.init(c);
-	monsters.Add(monsterScript);
-	monsterScript.name = "Monster"+ monsters.length;
-}
-
-function addMonster3(x : float, y :float, c : Character){
-	var monsterObject = new GameObject();					// Create a new empty game object that will hold a character.
-	var monsterScript = monsterObject.AddComponent("Monster3");		// Add the character.js script to the object.
 	
 	monsterScript.transform.parent = monsterFolder.transform;
 	monsterScript.transform.position = Vector3(x,y,0);		// Position the character at x,y.								
