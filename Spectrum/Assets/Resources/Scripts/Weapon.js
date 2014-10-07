@@ -9,6 +9,8 @@ public class Weapon extends MonoBehaviour{
 	public var swinging : boolean;
 	public var recovering : boolean;
 	public var swingSound : AudioSource; //Need one of these for each different clip.
+	public var tossSound : AudioSource; 
+
 	function init(c){
 		this.name = "Weapon";
 		recovering = false;
@@ -40,7 +42,10 @@ public class Weapon extends MonoBehaviour{
 		
 		swingSound = gameObject.AddComponent("AudioSource") as AudioSource; //Initialized AudioSource
 		swingSound.clip = Resources.Load("Sounds/woosh"); //Loads proper clip. In Unity Editor make sure "3D Sound" is UNCHECKED. It's checked by default. MP3s seem to work well and Audacity can export them.
-
+		swingSound.volume = .7;
+		tossSound = gameObject.AddComponent("AudioSource") as AudioSource;
+		tossSound.clip = Resources.Load("Sounds/woosh-woosh");
+		tossSound.volume = .5;
  		}
  		
  	function distanceFromOwner(){
@@ -95,6 +100,7 @@ public class Weapon extends MonoBehaviour{
 		startSwinging();
  		var t : float = 0;
  		while (t < time){
+ 				if(!tossSound.isPlaying) tossSound.Play();
  				t += Time.deltaTime;
  			//model.transform.eulerAngles = baseRotation + Vector3(0, 0, angle*(t/time));
  				model.transform.RotateAround(model.transform.position, Vector3.forward, (360 + overshoot)/time * Time.deltaTime);
@@ -122,6 +128,7 @@ public class Weapon extends MonoBehaviour{
  		startSwinging();
  		var t : float = 0;
  		while (t < time){
+ 			if(!tossSound.isPlaying) tossSound.Play();
  			t += Time.deltaTime;
  			model.transform.RotateAround(model.transform.position, Vector3.forward, spinSpeed * Time.deltaTime);
  			model.transform.position += (heading * distance * Time.deltaTime / time);
@@ -130,6 +137,8 @@ public class Weapon extends MonoBehaviour{
  		t=0;
  		while (distanceFromOwner() > .1){
  			t += Time.deltaTime;
+ 			 if(!tossSound.isPlaying) tossSound.Play();
+
  			model.transform.RotateAround(model.transform.position, Vector3.forward, spinSpeed * Time.deltaTime);
  			heading = model.transform.position - owner.model.transform.position;
  			model.transform.position -= (heading.normalized *distance * Time.deltaTime / time);

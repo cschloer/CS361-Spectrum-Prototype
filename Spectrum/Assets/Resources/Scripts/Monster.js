@@ -9,6 +9,13 @@ public class Monster extends MonoBehaviour
 	public var hurtRecovery : float; //Time spend invincible after hit
 	public var hurting : boolean; //Marker boolean for whether it was just hurt
 	public var modelObject : GameObject;
+	
+	public var hurtSound : AudioSource;
+	public var splatSound : AudioSource;
+	public var puffSound : AudioSource;
+	public var hissSound : AudioSource;
+	public var vip1Sound : AudioSource;
+	public var vip2Sound : AudioSource;
 
 	public function init(c : Character) {
 		hero = c;
@@ -38,6 +45,19 @@ public class Monster extends MonoBehaviour
  		modelObject.GetComponent(Rigidbody).useGravity = false;
  		modelObject.GetComponent(Rigidbody).inertiaTensor = Vector3(1, 1, 1);
  		modelObject.GetComponent(Rigidbody).freezeRotation = true;
+ 		
+ 		hurtSound = gameObject.AddComponent("AudioSource") as AudioSource;
+		hurtSound.clip = Resources.Load("Sounds/hit");
+		splatSound = gameObject.AddComponent("AudioSource") as AudioSource;
+		splatSound.clip = Resources.Load("Sounds/splat");
+		hissSound = gameObject.AddComponent("AudioSource") as AudioSource;
+		hissSound.clip = Resources.Load("Sounds/hiss");
+		puffSound = gameObject.AddComponent("AudioSource") as AudioSource;
+		puffSound.clip = Resources.Load("Sounds/puff");
+		vip1Sound = gameObject.AddComponent("AudioSource") as AudioSource;
+		vip1Sound.clip = Resources.Load("Sounds/vip1");
+		vip2Sound = gameObject.AddComponent("AudioSource") as AudioSource;
+		vip2Sound.clip = Resources.Load("Sounds/vip2");
 	}
 	
 	//Move forward at default speed
@@ -152,6 +172,7 @@ public class Monster extends MonoBehaviour
 	
 	//Subroutine - call once, runs concurrently.
 	public function hurt(){
+		hurtSound.Play();
 		flee(2, hurtRecovery); //Might want to be taken out and added only for specific monsters (by overriding hurt)
 		health--;
 		hurting = true;
@@ -179,6 +200,7 @@ public class Monster extends MonoBehaviour
 	}
 	function die(deathTime : float){
 		var t : float = 0;
+		splatSound.Play();
 		while (t < deathTime){
 			t += Time.deltaTime;
 			model.renderer.material.color.a = 1-(t/deathTime);
@@ -240,10 +262,12 @@ public class Monster extends MonoBehaviour
 	//Example melee attack
 	function simpleMelee(){
 		attack(1, 4, 0, 1, .2, Color(1, 1, 1), false, true, "melee");
+		hissSound.Play();
 	}
 	//Example ranged attack
 	function simpleBullet(){
 		attack(5, 2.5, .5, .3, .3, Color(1, 0, 1),true, false, "bullet");
+		puffSound.Play();
 	}
 	
 	
