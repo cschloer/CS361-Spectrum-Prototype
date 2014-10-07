@@ -15,14 +15,21 @@ var yellow:boolean;
 
 var rolling:boolean;
 var jumping:boolean;
+var vincible:boolean;	// New: makes the player vincible/invincible for certain jumps/rolls.
 
 var rjTimer:float;
 
 var character : Character;
 var modelObject;
 
+var walkclip : AnimationClip;
 
-
+var colorStore : Color;
+var heading : Vector3;
+var rollTime : float; 
+var rollSpeed : float;
+var rollCooldown : float;
+var jumpCooldown : float;
 // Use this for initialization
 function Start () {
 	speed = 2;
@@ -30,31 +37,40 @@ function Start () {
 	red = false;
 	yellow = false;
 	rolling = false;
-
+	vincible = true;
+	colorStore = Color(1,1,1);
+	heading = Vector3.zero;
+	rollTime = .5;
+	rollSpeed = 8;
+	rollCooldown = 1.5;
+	jumpCooldown = 1;
+	
 }
 
 // Update is called once per frame
 function Update () {
-
+	transform.position.z = 0;
+	rjTimer += Time.deltaTime;
 	if (rolling){
-		rjTimer += Time.deltaTime;
-		this.transform.Translate(Vector3.up * Time.deltaTime*speed);
-		if (rjTimer >= 0.5) { // Amount of time for rolling
+		this.transform.Translate(heading * Time.deltaTime*speed);
+		if (rjTimer >= rollTime) { // Amount of time for rolling
 			rolling = false;
-			this.renderer.material.color = Color(1,1,1);	
+			this.renderer.material.color = colorStore;	
 			Manager.gameObject.GetComponentInChildren(CameraMovement).rolling = false;
 			speed = 2;
 			Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 2;
+			rjTimer = 0;
 		}
-	
-	}
-	if (jumping){
-		rjTimer += Time.deltaTime;
-		if (rjTimer >= 1) { // Amount of time for rolling
+	 }
+	if (jumping){		
+		if (rjTimer >= 1) { // Amount of time for jumping
 			jumping = false;
-			this.renderer.material.color = Color(1,1,1);	
+			this.renderer.material.color = colorStore;	
 			Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = false;
-			modelObject.GetComponent(BoxCollider).isTrigger = false;
+			//modelObject.GetComponent(BoxCollider).isTrigger = false;
+			//gameObject.GetComponent(BoxCollider).isTrigger = true;
+			vincible = true;															// Makes player vincible again.
+			rjTimer = 0;
 		}
 	}
 	if (Input.GetKeyUp("w")){
@@ -116,41 +132,43 @@ function Update () {
 	}
 	if (Input.GetKeyDown("space")) {
 		if (!jumping && !rolling) { 
-			if (!blue){ // roll because blue
+			if (!blue && rjTimer >= rollCooldown){ // roll because blue
+				// todo: roll animation
+				colorStore = this.renderer.material.color;
 				this.renderer.material.color = Color(.5,.5,.5);
-				speed = 10;
-				Manager.gameObject.GetComponentInChildren(CameraMovement).speed = 10;
+				speed = rollSpeed;
+				Manager.gameObject.GetComponentInChildren(CameraMovement).speed = rollSpeed;
 				rolling = true;
 				Manager.gameObject.GetComponentInChildren(CameraMovement).rolling = true;
 				rjTimer = 0;
 			}
-			else { // jump because not blue
+			else if (blue && rjTimer >= jumpCooldown){ // jump because not blue
+				// todo: jump animation
+				colorStore = this.renderer.material.color;
 				this.renderer.material.color = Color(2,2,2);
 				jumping = true;
 				Manager.gameObject.GetComponentInChildren(CameraMovement).jumping = true;
 				rjTimer = 0;
-				modelObject.GetComponent(BoxCollider).isTrigger = true;
+				//modelObject.GetComponent(BoxCollider).isTrigger = false;
+				vincible = false;														// Player invincible without passing through walls.
+				
 			}
 		
 		}
 	}
-	
-	
-	
-	
-	
-	if (!rolling){
-	
-		if (rotateR) {
-			this.transform.Rotate(Vector3(0,0,Time.deltaTime*160*(speed)));
 			
-		}
+	if (!rolling){
+		
+		if (rotateR) this.transform.Rotate(Vector3(0,0,Time.deltaTime*160*(speed)));
 		if (rotateL) this.transform.Rotate(Vector3(0,0,-Time.deltaTime*160*(speed)));
 		
-		if (moveN) this.transform.Translate(Vector3.up * Time.deltaTime*speed);
-		if (moveE) this.transform.Translate(Vector3.right * Time.deltaTime*speed);
-		if (moveS) this.transform.Translate(Vector3.down * Time.deltaTime*speed);
-		if (moveW) this.transform.Translate(Vector3.left * Time.deltaTime*speed);
+		heading = Vector3.zero;
+		if (moveN) heading += Vector3.up;
+		if (moveE) heading += Vector3.right;
+		if (moveS) heading += Vector3.down;
+		if (moveW) heading += Vector3.left;
+		heading.Normalize();
+		this.transform.Translate(heading * Time.deltaTime * speed);
 	
 	}	
 	Manager.gameObject.GetComponentInChildren(CameraMovement).gameObject.transform.position = Vector3(this.transform.position.x, this.transform.position.y, -10)+3*this.transform.up;
@@ -162,19 +180,27 @@ function OnCollisionExit(collisionInfo : Collision){
 }
 
 function changeBlue(){
-	if (blue) blue = false;
-	else blue = true;
+	if (blue){
+		blue = false;
+		this.renderer.material.color = colorChoice();
+	}
+	else{
+		blue = true;
+		this.renderer.material.color = colorChoice();
+	}
 	print("Blue: " + blue);
 
 }
 function changeRed(){
 	if (red){
 		red = false;
+		this.renderer.material.color = colorChoice();
 		this.transform.localScale = Vector3(1,1,1); 
 		modelObject.GetComponent(BoxCollider).size = Vector3(.25,.5,10);
 	}
 	else {
 		red = true;
+		this.renderer.material.color = colorChoice();
 		this.transform.localScale = Vector3(2,2,2); 
 		modelObject.GetComponent(BoxCollider).size = Vector3(.5,1,10);
 	}
@@ -182,9 +208,35 @@ function changeRed(){
 
 }
 function changeYellow(){
-	if (yellow) yellow = false;
-	else yellow = true;
+	if (yellow) {
+		yellow = false;
+		this.renderer.material.color = colorChoice();
+	}
+	else {
+	  yellow = true;
+	  this.renderer.material.color = colorChoice();
+	}
 	print("Yellow: " + yellow);
+}
+
+function colorChoice(){
+  if(red && yellow && blue){
+  	return Color(0,0,0);
+  } else if( red && yellow){
+  	return Color(1,.5,0);
+  } else if( red && blue){
+  	return Color(1,0,1);
+  } else if( yellow && blue){
+  	return Color(0,1,0);
+  } else if( yellow ){
+  	return Color(1,1,0);
+  } else if( blue ) {
+  	return Color(0,0,1);
+  } else if( red ){
+  	return Color(1,0,0);
+  } else {
+  	return Color(1,1,1);
+  }
 }
 
 /*function OnTriggerEnter(col:Collider){
@@ -228,10 +280,12 @@ function stopMovement(){
 	Manager.gameObject.GetComponentInChildren(CameraMovement).moveS = false;
 	moveN = false;
 	Manager.gameObject.GetComponentInChildren(CameraMovement).moveN = false;
+	
+	//todo: stop moving animation
 }
 
 function OnTriggerEnter(col:Collider){
-	if(col.gameObject.name.Contains("attack") && !character.hurting){
+	if(col.gameObject.name.Contains("attack") && !character.hurting && vincible){
 		character.hurt();
 	}
 }
@@ -240,5 +294,6 @@ function OnDrawGizmos() {
 		// Draw a yellow cube at the transforms position
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawWireCube (transform.position, modelObject.GetComponent(BoxCollider).size);
+	
 }
 

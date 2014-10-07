@@ -8,13 +8,14 @@ public class Monster extends MonoBehaviour
 	public var health : int; //Max/starting health
 	public var hurtRecovery : float; //Time spend invincible after hit
 	public var hurting : boolean; //Marker boolean for whether it was just hurt
+	public var modelObject : GameObject;
 
 	public function init(c : Character) {
 		hero = c;
 		hurting = false;
 		health = 3;
 		hurtRecovery = .6;
-		var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
+		modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
 		model = modelObject.AddComponent("MonsterModel");						// Add a gemModel script to control visuals of the gem.
 		model.monster = this;
 		//gemType = 1;
@@ -115,6 +116,14 @@ public class Monster extends MonoBehaviour
 		return Vector3.Magnitude(model.transform.position - hero.model.transform.position);
 	}
 
+	//Gives an angle (in degrees) of the monster's radial position based on the hero's orientation. 0 is in front of hero, 180 is behind.
+	//Good for monsters getting behind hero
+	public function heroAngle(){
+		var vectorToHero : Vector3 = model.transform.position - hero.model.transform.position;
+		var anglesToHero : float = Mathf.Atan2(vectorToHero.y, vectorToHero.x) * Mathf.Rad2Deg - 90;
+		var num : float = anglesToHero - hero.model.transform.eulerAngles.z;
+		return num % 360 + 360;
+	}
 	//Rotates toward hero at given speed
 	public function turnToHero(multiplier : float){
 		var vectorToHero : Vector3 = model.transform.position - hero.model.transform.position;
@@ -125,15 +134,16 @@ public class Monster extends MonoBehaviour
 		if((model.transform.eulerAngles.z + (360-anglesToHero)) % 360 < 180) sign = 1;
 		model.transform.eulerAngles += Vector3(0, 0, Time.deltaTime * turnSpeed * sign * multiplier);
 	}
-	
 	public function turnToHero(){
 		turnToHero(1);
 	}
 	
+	
+	
 	//Subroutine - call once, runs concurrently.
 	public function flee(speed : float, duration : float){
 		var t : float = 0;
-		while(t < duration){
+		while(t < duration && health > 0){
 			t += Time.deltaTime;
 			moveFromHero(speed);
 			yield;
@@ -145,10 +155,10 @@ public class Monster extends MonoBehaviour
 		flee(2, hurtRecovery); //Might want to be taken out and added only for specific monsters (by overriding hurt)
 		health--;
 		hurting = true;
-		model.renderer.material.color = Color(2,2,2);
+		model.renderer.material.color = Color(.5,.5,.5);
 
 		var t : float = hurtRecovery;
-		while (t > 0){
+		while (t > 0 && health > 0){
 			t -= Time.deltaTime;
 			yield;
 		}
@@ -160,15 +170,36 @@ public class Monster extends MonoBehaviour
 	
 
 	function Update(){
+		if(health > 0){
+			act();
+		}else if (health > -100){
+			die(1);
+			health -= 101;
+		}		
+	}
+	function die(deathTime : float){
+		var t : float = 0;
+		while (t < deathTime){
+			t += Time.deltaTime;
+			model.renderer.material.color.a = 1-(t/deathTime);
+			yield;
+		}
+		Destroy(modelObject);
+	}
+	function act(){
 		model.transform.position.z = 0;
 		circlingBehaviour(2);
 		if(Random.value > .99){
 			simpleBullet();
 		}
 	}
-	//A generic attack. Width and depth are bullet dimensions. If fade is true, attack becomes translucent as it moves.
-	//Keywords can be used for specific hit behaviours (stun, slow, knockback, etc) to be implemented in CharacterModel's OnTriggerEnter.
-	function attack(range : float, speed : float, width :float, depth : float, color : Color, fade : boolean, keyword : String){
+	//A generic attack. 
+	//Width and depth are bullet dimensions. 
+	//If fade is true, attack becomes translucent as it moves.
+	//If home is more than zero the projectile homes toward the hero (the higher the number the more accurate the homing).
+	//If destructible is true, the sword can destroy the bullets.
+	//Keywords can be used for specific hit behaviours (stun, slow, knockback, etc) to be implemented in CharacterModel's (or WeaponModel's) OnTriggerEnter.
+	function attack(range : float, speed : float, home : float, width :float, depth : float, color : Color, destructible : boolean, fade : boolean, keyword : String){
 		var attackObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	
 		var attack : MonsterAttack = attackObject.AddComponent("MonsterAttack");						
 		attack.transform.localPosition = Vector3(0,0,0);						// Center the model on the parent.
@@ -179,12 +210,12 @@ public class Monster extends MonoBehaviour
 		attack.renderer.material.color = color;												// Set the color (easy way to tint things).
 		attack.renderer.material.shader = Shader.Find ("Transparent/Diffuse");						// Tell the renderer that our textures have transparency. 
 		attack.transform.localScale = Vector3(width,depth,1); 
-		attack.init(range, speed, fade);
-
+		attack.init(range, speed, fade, home);
+		attack.hero = hero;
 
 		attackObject.collider.enabled = false;
 		attackObject.AddComponent(BoxCollider);
-		attackObject.GetComponent(BoxCollider).name = "attack " + keyword;
+		attackObject.GetComponent(BoxCollider).name = "attack d:" + destructible + " " + keyword;
 		attackObject.GetComponent(BoxCollider).isTrigger = true;
 		attackObject.GetComponent(BoxCollider).size = Vector3(.5,.5,10);
 		attackObject.AddComponent(Rigidbody);
@@ -206,11 +237,11 @@ public class Monster extends MonoBehaviour
 	}
 	//Example melee attack
 	function simpleMelee(){
-		attack(1, 4, 1, .2, Color(1, 1, 1), true, "melee");
+		attack(1, 4, 0, 1, .2, Color(1, 1, 1), false, true, "melee");
 	}
 	//Example ranged attack
 	function simpleBullet(){
-		attack(5, 2.5, .3, .3, Color(1, 0, 1), false, "bullet");
+		attack(5, 2.5, .5, .3, .3, Color(1, 0, 1),true, false, "bullet");
 	}
 	
 	
