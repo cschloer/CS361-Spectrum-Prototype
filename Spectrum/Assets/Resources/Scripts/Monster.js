@@ -14,7 +14,7 @@ public class Monster extends MonoBehaviour
 		hero = c;
 		hurting = false;
 		health = 3;
-		hurtRecovery = .6;
+		hurtRecovery = 1;
 		modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);	// Create a quad object for holding the gem texture.
 		model = modelObject.AddComponent("MonsterModel");						// Add a gemModel script to control visuals of the gem.
 		model.monster = this;

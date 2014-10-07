@@ -34,6 +34,7 @@ function init(m) {
 	model.Manager = m;
 	model.modelObject = modelObject;
 	enabled = true;
+	checkHealth();
 }
 public function hurt(){
 		health--;
@@ -53,5 +54,17 @@ public function hurt(){
 
 function setWeapon(w : Weapon){
 	weapon = w;
+}
+function checkHealth(){
+	while(health > 0){
+		yield WaitForSeconds(.5);
+	}
+	var t : float = 0;
+	while (t < 2){
+		t += Time.deltaTime;
+		model.renderer.material.color.a = 1-(t/2);
+		yield;
+	}
+	Application.LoadLevel("Spectrum");
 }
 
