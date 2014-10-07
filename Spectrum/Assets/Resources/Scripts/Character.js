@@ -4,6 +4,8 @@ var hurtRecovery : float;
 var hurting : boolean;
 var health : int;
 var modelObject : GameObject;
+var oofSound : AudioSource;
+var killedMonsters : int;
 function init(m) {
 	health = 3;
 	hurtRecovery = .5;
@@ -35,8 +37,13 @@ function init(m) {
 	model.modelObject = modelObject;
 	enabled = true;
 	checkHealth();
+	oofSound = gameObject.AddComponent("AudioSource") as AudioSource;
+	oofSound.clip = Resources.Load("Sounds/oof");
+	killedMonsters = 0;
+
 }
 public function hurt(){
+		oofSound.Play();
 		health--;
 		hurting = true;
 		var before = model.renderer.material.color;

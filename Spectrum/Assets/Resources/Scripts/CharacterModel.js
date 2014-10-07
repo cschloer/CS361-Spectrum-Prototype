@@ -30,6 +30,11 @@ var rollTime : float;
 var rollSpeed : float;
 var rollCooldown : float;
 var jumpCooldown : float;
+
+var rollSound : AudioSource;
+var jumpSound : AudioSource;
+var landSound : AudioSource;
+
 // Use this for initialization
 function Start () {
 	speed = 2;
@@ -44,6 +49,13 @@ function Start () {
 	rollSpeed = 8;
 	rollCooldown = 1.5;
 	jumpCooldown = 1;
+	
+	rollSound = gameObject.AddComponent("AudioSource") as AudioSource;
+	rollSound.clip = Resources.Load("Sounds/tumble");
+	jumpSound = gameObject.AddComponent("AudioSource") as AudioSource;
+	jumpSound.clip = Resources.Load("Sounds/boing");
+	landSound = gameObject.AddComponent("AudioSource") as AudioSource;
+	landSound.clip = Resources.Load("Sounds/thump");
 	
 }
 
@@ -71,6 +83,7 @@ function Update () {
 			//gameObject.GetComponent(BoxCollider).isTrigger = true;
 			vincible = true;															// Makes player vincible again.
 			rjTimer = 0;
+			landSound.Play();
 		}
 	}
 	if (Input.GetKeyUp("w")){
@@ -134,6 +147,7 @@ function Update () {
 		if (!jumping && !rolling) { 
 			if (!blue && rjTimer >= rollCooldown){ // roll because blue
 				// todo: roll animation
+				rollSound.Play();
 				colorStore = this.renderer.material.color;
 				this.renderer.material.color = Color(.5,.5,.5);
 				speed = rollSpeed;
@@ -144,6 +158,7 @@ function Update () {
 			}
 			else if (blue && rjTimer >= jumpCooldown){ // jump because not blue
 				// todo: jump animation
+				jumpSound.Play();
 				colorStore = this.renderer.material.color;
 				this.renderer.material.color = Color(2,2,2);
 				jumping = true;

@@ -13,7 +13,7 @@ public class Monster6 extends Monster{
 	
 	function act(){
 		var distance : float = distanceToHero();
-		if(heroAngle() > 160 && heroAngle() < 200 && distance < 4.1 && distance > 3.9 && Random.value > .99) lunging = true;
+		if(heroAngle() > 160 && heroAngle() < 200 && distance < 4.1 && distance > 3.9 && Random.value > .97) lunging = true;
 		if(lunging){
 			move(2);
 			lungeTimer += Time.deltaTime;

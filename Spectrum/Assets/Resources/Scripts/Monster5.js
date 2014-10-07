@@ -25,10 +25,12 @@ public class Monster5 extends Monster {
 		if (clock%3 <.1 && clock/3 > blinkCounter ) {
 			print("Monster Blinkz");
 			if (isVisible) {
+				vip1Sound.Play();
 				isVisible = false;
 				blinkCounter++;
 				model.renderer.material.color.a = 0;
 			}else{
+				vip2Sound.Play();
 				isVisible = true;
 				blinkCounter++;
 				model.renderer.material.color.a = 1;
