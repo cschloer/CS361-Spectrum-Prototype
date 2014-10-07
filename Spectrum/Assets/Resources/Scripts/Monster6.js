@@ -9,6 +9,8 @@ public class Monster6 extends Monster{
 		moveSpeed = 2;
 		lunging = false;
 		lungeTimer = 0;
+		model.renderer.material.mainTexture = Resources.Load("Textures/sneaker", Texture2D);	// Set the texture.  Must be in Resources folder.
+
 	}
 	
 	function act(){
