@@ -32,7 +32,7 @@ public class Monster extends MonoBehaviour
 		modelObject.collider.enabled = false;
  		modelObject.AddComponent(BoxCollider);
 		modelObject.GetComponent(BoxCollider).isTrigger = false;
- 		modelObject.GetComponent(BoxCollider).size = Vector3(.5,.5,.5);
+ 		modelObject.GetComponent(BoxCollider).size = Vector3(.5,.5,10);
  		modelObject.AddComponent(Rigidbody);
 		modelObject.GetComponent(Rigidbody).isKinematic = false;
  		modelObject.GetComponent(Rigidbody).useGravity = false;
@@ -194,9 +194,11 @@ public class Monster extends MonoBehaviour
 		}
 	}
 	//A generic attack. 
+	//Range is distance attack travels before disappearing.
+	//Speed is the movement speed of the attack.
+	//If home is more than zero the projectile homes toward the hero (the higher the number the more accurate the homing).
 	//Width and depth are bullet dimensions. 
 	//If fade is true, attack becomes translucent as it moves.
-	//If home is more than zero the projectile homes toward the hero (the higher the number the more accurate the homing).
 	//If destructible is true, the sword can destroy the bullets.
 	//Keywords can be used for specific hit behaviours (stun, slow, knockback, etc) to be implemented in CharacterModel's (or WeaponModel's) OnTriggerEnter.
 	function attack(range : float, speed : float, home : float, width :float, depth : float, color : Color, destructible : boolean, fade : boolean, keyword : String){
