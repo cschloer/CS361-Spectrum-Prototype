@@ -170,9 +170,9 @@ public class Weapon extends MonoBehaviour{
  				}
  			} else{
  				if(!owner.model.red){
- 					swing(110, .3, 1);
+ 					swing(110, .3, .5);
  				} else {
- 					swing(110, .5, 1.5);
+ 					swing(110, .5, 1);
  				}
  			}
  		}
