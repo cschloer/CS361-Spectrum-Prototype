@@ -22,7 +22,8 @@ public class Monster2 extends Monster {
 			
 		model.transform.localScale = Vector3(1.5,1.5,1.5);					// Make him a big'un.
 		model.renderer.material.mainTexture = Resources.Load("Textures/Monster2", Texture2D);	// Set the texture.  Must be in Resources folder.
- 		modelObject.GetComponent(BoxCollider).size = Vector3(.75,.75,.75);
+ 		modelObject.GetComponent(BoxCollider).size = Vector3(.75,.75,10);
+
  		chargeSound = gameObject.AddComponent("AudioSource") as AudioSource; //Initialized AudioSource
 		chargeSound.clip = Resources.Load("Sounds/snort"); //Loads proper clip. In Unity Editor make sure "3D Sound" is UNCHECKED. It's checked by default. MP3s seem to work well and Audacity can export them.
 
