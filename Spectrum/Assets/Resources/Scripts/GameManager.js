@@ -10,6 +10,7 @@ var camera:GameObject;
 
 var clock: float;
 var monsterCounter : int;
+var clockFrequency : int;
 // Called once when the script is created.
 function Start () {
 	characterFolder = new GameObject();  
@@ -35,6 +36,7 @@ function Start () {
 	
 	clock = 0.0;
 	monsterCounter = 0;
+	clockFrequency = 15;
 
 
 	
@@ -83,7 +85,7 @@ function addCircle(color:int){
 }
 
 function spawnMonster() {
-	if (clock%10 <.1 && clock/10 > monsterCounter){
+	if (clock%clockFrequency <.1 && clock/clockFrequency > monsterCounter){
 		var rX : float;
 		var rY : float;
 		var rType: int;
@@ -92,6 +94,10 @@ function spawnMonster() {
 		rType = Random.Range(1,6);
 		addMonster(rX,rY,character,rType);
 		monsterCounter++;
+		if (clockFrequency > 1){
+			clockFrequency--;
+		}
+		print("spawned monster" + clockFrequency);
 	}
 }
 
@@ -164,4 +170,8 @@ function protolevelInit(){
       }
     }
   }
+}
+
+function OnGUI() {
+	GUI.Label(Rect(0,0,Screen.width,Screen.height),"Health: " + character.health + "\nKilled Monsters: " + character.killedMonsters );
 }

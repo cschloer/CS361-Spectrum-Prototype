@@ -4,7 +4,11 @@ var hurtRecovery : float;
 var hurting : boolean;
 var health : int;
 var modelObject : GameObject;
+<<<<<<< HEAD
 var oofSound : AudioSource;
+=======
+var killedMonsters : int;
+>>>>>>> FETCH_HEAD
 function init(m) {
 	health = 3;
 	hurtRecovery = .5;
@@ -36,9 +40,10 @@ function init(m) {
 	model.modelObject = modelObject;
 	enabled = true;
 	checkHealth();
-	
 	oofSound = gameObject.AddComponent("AudioSource") as AudioSource;
 	oofSound.clip = Resources.Load("Sounds/oof");
+	killedMonsters = 0;
+
 }
 public function hurt(){
 		oofSound.Play();

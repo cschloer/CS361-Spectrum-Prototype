@@ -199,6 +199,7 @@ public class Monster extends MonoBehaviour
 		}		
 	}
 	function die(deathTime : float){
+		hero.killedMonsters++;
 		var t : float = 0;
 		splatSound.Play();
 		while (t < deathTime){
