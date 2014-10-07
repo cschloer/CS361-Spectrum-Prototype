@@ -11,6 +11,8 @@ var camera:GameObject;
 var clock: float;
 var monsterCounter : int;
 var clockFrequency : int;
+
+var musicSound : AudioSource;
 // Called once when the script is created.
 function Start () {
 	characterFolder = new GameObject();  
@@ -37,8 +39,10 @@ function Start () {
 	clock = 0.0;
 	monsterCounter = 0;
 	clockFrequency = 15;
-
-
+	musicSound = gameObject.AddComponent("AudioSource") as AudioSource;
+	musicSound.clip = Resources.Load("Sounds/music");
+	musicSound.volume = .4;
+	musicSound.loop = true;
 	
 }
 
