@@ -96,11 +96,11 @@ function spawnMonster() {
 		var rType: int;
 		rX = Random.Range(-10.0,10.0);
 		rY = Random.Range(-10.0,10.0);
-		rType = Random.Range(1,6);
+		rType = Random.Range(1,7);
 		addMonster(rX,rY,character,rType);
 		monsterCounter++;
 		if (clockFrequency > 1){
-			clockFrequency *= .95;
+			clockFrequency *= .98;
 		}
 		print("spawned monster " + rType + ", " + clockFrequency);
 	}

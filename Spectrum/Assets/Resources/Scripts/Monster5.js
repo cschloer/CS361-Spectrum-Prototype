@@ -13,6 +13,8 @@ public class Monster5 extends Monster {
 		clock = 0.0;
 		blinkCounter = 0;
 		health = 2;
+		model.renderer.material.mainTexture = Resources.Load("Textures/magician", Texture2D);	// Set the texture.  Must be in Resources folder.
+
 	}
 	
 	function hurt() {
