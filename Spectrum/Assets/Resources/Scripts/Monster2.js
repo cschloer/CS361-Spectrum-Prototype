@@ -35,7 +35,7 @@ public class Monster2 extends Monster {
 		modelObject.collider.enabled = false;
  		modelObject.AddComponent(BoxCollider);
 		modelObject.GetComponent(BoxCollider).isTrigger = false;
- 		modelObject.GetComponent(BoxCollider).size = Vector3(.75,.75,.75);
+ 		modelObject.GetComponent(BoxCollider).size = Vector3(.75,.75,10);
  		modelObject.AddComponent(Rigidbody);
 		modelObject.GetComponent(Rigidbody).isKinematic = false;
  		modelObject.GetComponent(Rigidbody).useGravity = false;
