@@ -137,13 +137,13 @@ function addMonster(x : float, y :float, c : Character, type: int){
 			monsterScript = monsterObject.AddComponent("Monster3");
 			break;
 		case 4:
-			monsterScript = monsterObject.AddComponent("Monster4");
+			//monsterScript = monsterObject.AddComponent("Monster4");
 			break;
 		case 5:
 			monsterScript = monsterObject.AddComponent("Monster5");
 			break;
 		case 6:
-			monsterScript = monsterObject.AddComponent("Monster6");		// Add the monster2.js script to the object.
+			monsterScript = monsterObject.AddComponent("Monster6");		// Add the monster6.js script to the object.
 			break;
 		default:
 			monsterScript = monsterObject.AddComponent("Monster");		// Add the monster.js script to the object.
